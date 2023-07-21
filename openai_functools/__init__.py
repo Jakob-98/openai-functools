@@ -5,4 +5,3 @@ __all__ = [
     "function_metadata_decorator",
     "extract_function_metadata",
     "FunctionsOrchestrator",
-]
