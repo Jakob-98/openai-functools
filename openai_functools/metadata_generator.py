@@ -16,7 +16,7 @@ def extract_openai_function_metadata(func: Callable) -> dict:
     params = sig.parameters
     properties = {}
 
-    # parse the function's docstring
+    # assumes the format from https://pypi.org/project/docstring-parser/
     docstring = parse(func.__doc__ if func.__doc__ else '')
     docstring_params = {param.arg_name: param.description for param in docstring.params}
 
