@@ -30,10 +30,10 @@ jobs:
 
     - name: Install dependencies
       run: poetry install
-      
+
     - name: Update version
       run: |
-        version=$(echo "0.2.${GITHUB_RUN_NUMBER}" | sed 's/^0*//')
+        version="0.2.${GITHUB_RUN_NUMBER}"
         sed -i "s/version = .*/version = \"$version\"/" pyproject.toml
 
     - name: Build distributions
