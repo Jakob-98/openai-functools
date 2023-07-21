@@ -1,5 +1,7 @@
-from pytest import fixture
 import json
+
+from pytest import fixture
+
 
 @fixture
 def weather_function():
@@ -19,11 +21,14 @@ def weather_function():
             "forecast": ["sunny", "windy"],
         }
         return json.dumps(weather_info)
+
     return get_current_weather
+
 
 @fixture
 def no_docstring_function():
     """Example function without docstrings."""
+
     def get_current_weather(location, unit="fahrenheit"):
         weather_info = {
             "location": location,
@@ -35,12 +40,16 @@ def no_docstring_function():
 
     return get_current_weather
 
+
 @fixture
 def no_parameters_function():
     """Example function without parameters."""
+
     def say_hello():
         return "Hello, world!"
+
     return say_hello
+
 
 @fixture()
 def expected_metadata():
@@ -51,16 +60,20 @@ def expected_metadata():
         "parameters": {
             "type": "object",
             "properties": {
-                "location": {"type": "string", "description": "The location to get the weather for."},
+                "location": {
+                    "type": "string",
+                    "description": "The location to get the weather for.",
+                },
                 "unit": {
                     "type": "string",
-                    "description": "The unit for temperature, default is \"fahrenheit\".",
+                    "description": 'The unit for temperature, default is "fahrenheit".',
                     "default": "fahrenheit",
                 },
             },
             "required": ["location"],
         },
     }
+
 
 @fixture
 def expected_no_docstring_metadata():
@@ -81,6 +94,7 @@ def expected_no_docstring_metadata():
             "required": ["location"],
         },
     }
+
 
 @fixture
 def expected_no_parameters_metadata():
