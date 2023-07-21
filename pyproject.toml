@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "openai-functools"
+name = "openai_functools"
 version = "0.1.0"
 description = "python openai functions tooling"
 authors = ["Jakob Serlier <37184788+Jakob-98@users.noreply.github.com>"]
