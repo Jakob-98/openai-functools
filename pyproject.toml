@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "openai-functools"
+version = "0.1.0"
+description = "python openai functions tooling"
+authors = ["Jakob Serlier <37184788+Jakob-98@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "openai_functools"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+openai = "^0.27.8"
+pytest = "^7.4.0"
+flake8 = "^6.0.0"
+black = "^23.7.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
