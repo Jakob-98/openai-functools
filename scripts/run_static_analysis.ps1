@@ -11,4 +11,7 @@ poetry run black .
 Write-Output "Running Flake8 for linting..."
 poetry run flake8 .
 
+# Run isort"
+poetry run isort .
+
 Write-Output "Static analysis completed successfully!"

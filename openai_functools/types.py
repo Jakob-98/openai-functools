@@ -1,5 +1,6 @@
 """Types module for openapi_functools """
 
+
 def python_type_to_openapi_type(python_type: type) -> str:
     if python_type == str:
         return "string"
@@ -15,4 +16,3 @@ def python_type_to_openapi_type(python_type: type) -> str:
         return "object"
     else:
         return "string"  # default
-
