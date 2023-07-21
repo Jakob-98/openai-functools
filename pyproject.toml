@@ -2,7 +2,7 @@
 name = "openai_functools"
 version = "0.1.0"
 description = "python openai functions tooling"
-authors = ["Jakob Serlier <37184788+Jakob-98@users.noreply.github.com>"]
+authors = ["Jakob Serlier <37184788+Jakob-98@users.noreply.github.com>", "Marc van Duyn <codingkitties@gmail.com>"]
 readme = "README.md"
 packages = [{include = "openai_functools"}]
 
