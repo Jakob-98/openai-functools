@@ -35,5 +35,8 @@ jobs:
     - name: Run linter
       run: poetry run flake8 .
 
+    - name: Run black
+      run: poetry run flake8 .
+
     - name: Run tests
       run: poetry run pytest
