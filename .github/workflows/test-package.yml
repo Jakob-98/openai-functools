@@ -1,0 +1,39 @@
+# .github/workflows/test-package.yml
+
+name: Test Package
+
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  test:
+    name: Run linter and tests
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: Install Poetry
+      run: |
+        curl -sSL https://install.python-poetry.org | python -
+
+    - name: Configure Poetry
+      run: poetry config virtualenvs.create false
+
+    - name: Install dependencies
+      run: poetry install
+
+    - name: Run linter
+      run: poetry run flake8 .
+
+    - name: Run tests
+      run: poetry run pytest

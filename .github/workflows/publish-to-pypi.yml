@@ -1,0 +1,40 @@
+# .github/workflows/publish-to-pypi.yml
+
+name: Publish Python 🐍 distributions 📦 to PyPI
+
+on:
+  workflow_run:
+    workflows: ["Test Package"]
+    types:
+      - completed
+
+jobs:
+  build-n-publish:
+    name: Build and publish Python 🐍 distributions 📦 to PyPI
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'success'
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: Install Poetry
+      run: |
+        curl -sSL https://install.python-poetry.org | python -
+
+    - name: Configure Poetry
+      run: |
+        poetry config virtualenvs.create false
+        poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
+
+    - name: Install dependencies
+      run: poetry install
+
+    - name: Build distributions
+      run: poetry build
+
+    - name: Publish distribution 📦 to PyPI
+      run: poetry publish
