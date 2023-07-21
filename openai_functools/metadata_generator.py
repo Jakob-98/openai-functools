@@ -1,13 +1,14 @@
 import inspect
-import re
 from functools import wraps
 from typing import Any, Callable
+
+from docstring_parser import parse
 
 from openai_functools.types import python_type_to_openapi_type
 
 
-def function_metadata_decorator(func: Callable) -> Callable:
-    func.metadata = extract_function_metadata(func)
+def openai_function(func: Callable) -> Callable:
+    func.openai_metadata = extract_openai_function_metadata(func)
 
     @wraps(func)
     def wrapper(*args: Any, **kwargs: Any) -> Any:
@@ -16,44 +17,21 @@ def function_metadata_decorator(func: Callable) -> Callable:
     return wrapper
 
 
-def extract_function_metadata(func: Callable) -> dict:
+def extract_openai_function_metadata(func: Callable) -> dict:
     sig = inspect.signature(func)
     params = sig.parameters
     properties = {}
 
-    # parse the function's docstring
-    docstring = func.__doc__
-    docstring_dict = {}
-
-    # TODO use docstring_parser instead, this is not a good way to parse docstrings
-    if docstring:
-        # we're assuming each parameter description is a separate line
-        # that starts with the parameter's name, followed by a colon
-        lines = docstring.split("\n")
-        for line in lines:
-            match = re.match(r"^\s*(\w+)\s*:\s*(.+)$", line)
-            if match:
-                param_name, param_desc = match.groups()
-                docstring_dict[param_name] = param_desc.strip()
+    # assumes the format from https://pypi.org/project/docstring-parser/
+    docstring = parse(func.__doc__ if func.__doc__ else "")
+    docstring_params = {param.arg_name: param.description for param in docstring.params}
 
     for name, param in params.items():
-        properties[name] = {
-            "type": python_type_to_openapi_type(param.annotation)
-            if param.annotation != param.empty
-            else "string"
-        }
-        print(params, name)
-        if name in docstring_dict:
-            properties[name]["description"] = docstring_dict[name]
-        else:
-            properties[name]["description"] = name
-        if param.default != param.empty:
-            properties[name]["default"] = param.default
+        properties[name] = extract_parameter_properties(param, docstring_params)
 
-    print(func.__name__)
     metadata = {
         "name": func.__name__,
-        "description": docstring.split("\n")[0] if docstring else func.__name__,
+        "description": docstring.short_description or func.__name__,
         "parameters": {
             "type": "object",
             "properties": properties,
@@ -63,3 +41,18 @@ def extract_function_metadata(func: Callable) -> dict:
         },
     }
     return metadata
+
+
+def extract_parameter_properties(
+    param: inspect.Parameter, docstring_params: dict
+) -> dict:
+    name = param.name
+    properties = {
+        "type": python_type_to_openapi_type(param.annotation)
+        if param.annotation != param.empty
+        else "string"  # make this configurable?
+    }
+    properties["description"] = docstring_params.get(name, name)
+    if param.default != param.empty:
+        properties["default"] = param.default
+    return properties

@@ -13,7 +13,7 @@ pip install openai-functools
 Alternatively, you can clone this repository and install with Poetry:
 
 ```sh
-git clone https://github.com/username/openai-functools.git
+git clone https://github.com/Jakob-98/openai-functools.git
 cd openai-functools
 poetry install
 ```
@@ -32,7 +32,11 @@ def my_function(arg1: str, arg2: int) -> str:
 
 This will automatically generate the necessary JSON structure for use with the Chat Completions API.
 
+TODO add info docstring retreival
+
 ## Examples
+
+**TODO** add proper example, current ones are from PoC project and outdated.
 
 Several examples can be found in the `examples` directory of this repository. Each example provides a concrete implementation of how to use `openai-functools` in different scenarios.
 
