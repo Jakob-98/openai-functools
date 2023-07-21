@@ -1,5 +1,5 @@
 from pytest import fixture
-
+import json
 
 @fixture
 def weather_function():
@@ -32,4 +32,33 @@ def expected_metadata():
             },
             "required": ["location"],
         },
+    }
+
+
+@fixture()
+def weather_chat_response():
+    return {
+        "id": "chatcmpl-7elUo0WOn1SxvYJPEx3TOprJMJeac",
+        "object": "chat.completion",
+        "created": 1689950050,
+        "model": "gpt-3.5-turbo-0613",
+        "choices": [
+            {
+                "index": 0,
+                "message": {
+                    "role": "assistant",
+                    "content": "null",
+                    "function_call": {
+                        "name": "get_current_weather",
+                        "arguments": "{\n  \"location\": \"Boston\"\n}"
+                    }
+                },
+                "finish_reason": "function_call"
+            }
+        ],
+        "usage": {
+            "prompt_tokens": 68,
+            "completion_tokens": 16,
+            "total_tokens": 84
+        }
     }
