@@ -1,8 +1,8 @@
 import inspect
-from typing import Any, Callable
-from functools import wraps
 import re
-from typing import Any, Callable, List
+from functools import wraps
+from typing import Any, Callable
+
 from openai_functools.types import python_type_to_openapi_type
 
 

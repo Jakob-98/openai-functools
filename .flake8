@@ -1,0 +1,6 @@
+[flake8]
+exclude =
+    tests/*
+    examples/*
+max-line-length = 120
+ignore = E501

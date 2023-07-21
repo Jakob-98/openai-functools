@@ -1,8 +1,7 @@
 import pytest
-from openai_functools.metadata_generator import (
-    function_metadata_decorator,
-    extract_function_metadata,
-)
+
+from openai_functools.metadata_generator import (extract_function_metadata,
+                                                 function_metadata_decorator)
 
 
 def test_extract_function_metadata(weather_function, expected_metadata):

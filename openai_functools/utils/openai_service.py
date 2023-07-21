@@ -1,6 +1,7 @@
 import json
-from typing import List, Dict, Union, Any, Optional, Callable
 from dataclasses import dataclass
+from typing import Any, Callable, Dict, List
+
 import openai
 
 
@@ -21,7 +22,6 @@ class OpenAIService:
         model: str = "gpt-3.5-turbo-0613",
         function_specs: List[FunctionSpec] = None,
     ):
-        self.openai = openai
         self.model = model
         self.function_specs = function_specs if function_specs is not None else []
 
@@ -30,7 +30,7 @@ class OpenAIService:
     ) -> Any:
         functions = [spec.parameters for spec in self.function_specs]
 
-        response = self.openai.ChatCompletion.create(
+        response = openai.ChatCompletion.create(
             model=self.model,
             messages=messages,
             functions=functions,
@@ -48,7 +48,7 @@ class OpenAIService:
                     try:
                         if not isinstance(function_response, str):
                             function_response = str(function_response)
-                    except Exception as e:
+                    except Exception:
                         function_response = repr(function_response)
                     messages.append(response_message)
                     messages.append(
@@ -59,7 +59,7 @@ class OpenAIService:
                         }
                     )
                     print(messages)
-                    second_response = self.openai.ChatCompletion.create(
+                    second_response = openai.ChatCompletion.create(
                         model=self.model,
                         messages=messages,
                     )
