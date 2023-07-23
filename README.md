@@ -1,4 +1,4 @@
-# openai-functools
+# [openai-functools](https://github.com/Jakob-98/openai-functools)
 
 `openai-functools` is a Python library designed to enhance the functionality of OpenAI's 1 `gpt-3.5-turbo-0613` and `gpt-4-0613` models for function calling. This library focuses on generating the required JSON automatically by wrapping existing Python functions in our decorator. This removes the need for you to manually create and manage the JSON structures required for function calling in these models.
 
