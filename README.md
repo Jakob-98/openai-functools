@@ -84,40 +84,54 @@ def run_conversation():
     ]
 ```
 
-### Using the orchestrator
+### Using the Orchestrator
+
+The orchestrator in `openai-functools` simplifies the task of managing multiple registered functions and automates the generation of OpenAI function descriptions. Below is a guide on how to use it.
 
 ```python
 from openai_functools import FunctionsOrchestrator
 
 def get_current_weather(location, unit="fahrenheit"):
     """Get the current weather forecast in a given location"""
-    weather_info = {
-        "location": location,
-        "temperature": "72",
-        "unit": unit,
-        "forecast": ["sunny", "windy"],
-    }
-    return json.dumps(weather_info)
+    # ... Implementation here
 
 def get_weather_next_day(location, unit="fahrenheit"):
     """Get the weather forecast for the next day in a given location"""
-    weather_info = {
-        "location": location,
-        "temperature": "78",
-        "unit": unit,
-        "forecast": ["sunny", "windy"],
-    }
-    return json.dumps(weather_info)
+    # ... Implementation here
 
 orchestrator = FunctionsOrchestrator()
 orchestrator.register_all([get_current_weather, get_weather_next_day])
+# ...
+```
+
+#### Registering Functions
+
+Functions can be registered using the `register_all` or `register` method as shown in the code snippet above. `register_all` accepts a list of functions, while `register` is used to register a single function. 
+
+### Creating and Using Function Descriptions
+
+Function descriptions are automatically created based on the registered functions using `create_function_descriptions` method. These descriptions can then be passed to the OpenAI `ChatCompletion.create` method.
+
+```python
 response = openai.ChatCompletion.create(
     model="gpt-3.5-turbo-0613",
     messages=[{"role": "user", "content": "What's the weather like in Boston?"}],
     functions=orchestrator.create_function_descriptions(),
     function_call="auto",
 )
+```
+
+### Calling Functions Based on the OpenAI Response
+
+The `call_function` method is used to call a function based on the OpenAI response. It fetches the function call data from the response, finds the matching function from the registered functions, and calls it with the provided arguments.
+
+```python
 function_results = orchestrator.call_function(response)
+```
+
+This process can be repeated for subsequent interactions with the OpenAI model, allowing easy use of multiple functions in a conversational context.
+
+```python
 response = openai.ChatCompletion.create(
     model="gpt-3.5-turbo-0613",
     messages=[{"role": "user", "content": "What's the weather like in Boston tomorrow?"}],
@@ -126,7 +140,8 @@ response = openai.ChatCompletion.create(
 )
 function_results = orchestrator.call_function(response)
 ```
-### Using docstrings to enhance metadata
+
+## Using docstrings to enhance metadata
 
 By using docstrings in your functions, we are able to extract more information to fill in the descriptions of the function and its properties. This will automatically be added to the openai function metadata, and will help the model better understand the functions and parameters.
 
