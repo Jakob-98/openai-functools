@@ -20,7 +20,11 @@ poetry install
 
 ## Usage
 
-To use `openai-functools`, import the package and wrap your function with the provided decorator. First, a **naive example** which does not use our libary (see `./examples/naive_approach.py`):
+This library is designed to streamline the usage of OpenAI's language models by simplifying the function metadata creation process. The following sections will walk you through a basic usage of openai-functools, including a traditional manual approach and our enhanced automatic approach using the `openai_function` decorator.
+
+### Manual Approach
+
+Traditionally, you'd define a function, like `get_current_weather`, and then manually create a JSON structure that describes this function. The structure includes the function name, description, and parameters it takes, as well as the types of these parameters.
 
 ```python
 def get_current_weather(location, unit="fahrenheit"):
@@ -51,11 +55,12 @@ def run_conversation():
             },
         }
     ]
-
-    ... # call openai,  call the function using the response, call the OpenAI model again, etc..
+    # Proceed with calling openai, invoking the function using the response, etc..
 ```
 
-Instead, our **novel approach**, we automatically generate the neccesary function parameters, and the above now becomes:
+### Enhanced Automatic Approach
+
+The `openai-functools` library simplifies the process by automatically generating the necessary JSON structure. You just need to import our package and wrap your function with the `openai_function` decorator. Here's how it works:
 
 ```python
 import json
@@ -78,7 +83,11 @@ def run_conversation():
     ]
 ```
 
-### Using the orchestrator
+As you can see, our `openai_function` decorator allows you to focus more on the logic of your function, while the tedious task of preparing function metadata is taken care of automatically.
+
+### Using the Orchestrator
+
+The orchestrator in `openai-functools` simplifies the task of managing multiple registered functions and automates the generation of OpenAI function descriptions. Below is a guide on how to use it.
 
 ```python
 from openai_functools import FunctionsOrchestrator
