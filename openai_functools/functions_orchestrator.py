@@ -1,8 +1,9 @@
 import json
-from typing import Any, Callable, List, Optional, Dict
+from typing import Any, Callable, Dict, List, Optional
 
 from openai_functools.function_spec import FunctionSpec
-from openai_functools.metadata_generator import extract_openai_function_metadata
+from openai_functools.metadata_generator import \
+    extract_openai_function_metadata
 
 
 class FunctionsOrchestrator:
