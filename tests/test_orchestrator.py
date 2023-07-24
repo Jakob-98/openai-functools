@@ -1,3 +1,5 @@
+import pytest
+
 from openai_functools import FunctionsOrchestrator
 
 
@@ -66,3 +68,17 @@ def test_orchestrator_call_functions(weather_chat_response, weather_function):
         '"unit": "fahrenheit", '
         '"forecast": ["sunny", "windy"]}'
     }
+
+
+def test_call_unregistered_function_raises_error():
+    orchestrator = FunctionsOrchestrator()
+
+    with pytest.raises(ValueError):
+        orchestrator.call_functions({"choices": [{"message": {"function_call": {"name": "unregistered_function", "arguments": "{}"}}}]})
+
+
+def test_register_non_callable_raises_error():
+    orchestrator = FunctionsOrchestrator()
+
+    with pytest.raises(TypeError):
+        orchestrator.register("not_a_function")
