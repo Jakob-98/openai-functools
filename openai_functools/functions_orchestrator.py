@@ -4,6 +4,7 @@ from typing import Any, Callable, List, Optional, Dict
 from openai_functools.function_spec import FunctionSpec
 from openai_functools.metadata_generator import extract_openai_function_metadata
 
+
 class FunctionsOrchestrator:
     def __init__(self, functions: Optional[List[Callable]] = None) -> None:
         self._functions = functions if functions is not None else []
@@ -80,7 +81,14 @@ class FunctionsOrchestrator:
     def function_descriptions(self) -> List[Dict[str, Any]]:
         return [spec.parameters for spec in self._function_specs]
 
-    def create_function_descriptions(self, selected_functions: Optional[List[str]] = None) -> List[Dict[str, Any]]:
-        specs = self._function_specs if selected_functions is None else [spec for spec in self._function_specs if spec.name in selected_functions]
+    def create_function_descriptions(
+        self, selected_functions: Optional[List[str]] = None
+    ) -> List[Dict[str, Any]]:
+        specs = (
+            self._function_specs
+            if selected_functions is None
+            else [
+                spec for spec in self._function_specs if spec.name in selected_functions
+            ]
+        )
         return [spec.parameters for spec in specs]
-

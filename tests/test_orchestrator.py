@@ -74,7 +74,20 @@ def test_call_unregistered_function_raises_error():
     orchestrator = FunctionsOrchestrator()
 
     with pytest.raises(ValueError):
-        orchestrator.call_functions({"choices": [{"message": {"function_call": {"name": "unregistered_function", "arguments": "{}"}}}]})
+        orchestrator.call_functions(
+            {
+                "choices": [
+                    {
+                        "message": {
+                            "function_call": {
+                                "name": "unregistered_function",
+                                "arguments": "{}",
+                            }
+                        }
+                    }
+                ]
+            }
+        )
 
 
 def test_register_non_callable_raises_error():
