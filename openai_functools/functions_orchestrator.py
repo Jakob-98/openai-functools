@@ -11,8 +11,9 @@ class FunctionsOrchestrator:
         self._functions = []
         self._function_specs = []
 
-        for function in functions:
-            self._add_function(function)
+        if functions is not None:
+            for function in functions:
+                self._add_function(function)
 
     @property
     def functions(self) -> List[Callable]:
@@ -37,11 +38,18 @@ class FunctionsOrchestrator:
 
     def _add_function(self, function: Callable) -> None:
 
+        if not callable(function):
+            raise TypeError(
+                f'Function "{function}" is not callable.'
+            )
+
         if self._functions is None:
             self._functions = []
             self._function_specs = []
 
-        if function.__name__ in self._functions:
+        matching_function = self._get_matching_function(function.__name__)
+
+        if matching_function is not None:
             raise ValueError(
                 f'Function "{function.__name__}" is already registered.'
             )
