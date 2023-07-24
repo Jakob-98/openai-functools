@@ -4,7 +4,7 @@
 
 ## Why openai-functools
 
-![example](./example.png)
+![example](https://github.com/Jakob-98/openai-functools/blob/7641fd5d34beca9c1b690d06cd18e40fde6a2a49/example.png)
 
 ## Installation
 
