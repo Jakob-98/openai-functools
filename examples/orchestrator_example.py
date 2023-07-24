@@ -1,6 +1,8 @@
-import os
 import json
+import os
+
 import openai
+
 from openai_functools import FunctionsOrchestrator
 
 
@@ -34,8 +36,7 @@ if __name__ == "__main__":
     openai.api_key = os.environ["OPENAI_API_KEY"]
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo-0613",
-        messages=[
-            {"role": "user", "content": "What's the weather like in Boston?"}],
+        messages=[{"role": "user", "content": "What's the weather like in Boston?"}],
         functions=orchestrator.create_function_descriptions(),
         function_call="auto",
     )
@@ -45,11 +46,10 @@ if __name__ == "__main__":
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo-0613",
         messages=[
-            {"role": "user", "content": "What's the weather like in Boston tomorrow?"}],
+            {"role": "user", "content": "What's the weather like in Boston tomorrow?"}
+        ],
         functions=orchestrator.create_function_descriptions(),
         function_call="auto",
     )
     # Call the function that is specified in the response
     print(orchestrator.call_function(response))
-
-

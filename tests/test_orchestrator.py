@@ -95,3 +95,21 @@ def test_register_non_callable_raises_error():
 
     with pytest.raises(TypeError):
         orchestrator.register("not_a_function")
+
+
+def test_register_duplicate_function():
+    orchestrator = FunctionsOrchestrator()
+
+    def function_one():
+        return "function_one"
+
+    orchestrator.register(function_one)
+
+    with pytest.raises(ValueError):
+        orchestrator.register(function_one)
+
+    with pytest.raises(ValueError):
+        orchestrator.register_all([function_one])
+
+    with pytest.raises(ValueError):
+        orchestrator.functions = [function_one, function_one]
