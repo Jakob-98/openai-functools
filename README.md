@@ -134,9 +134,7 @@ Currently, only "reStructuredText" (reST) is supported by default, although this
 
 ## Examples
 
-**TODO** add proper example, current ones are from PoC project and outdated.
-
-Several examples can be found in the `examples` directory of this repository. Each example provides a concrete implementation of how to use `openai-functools` in different scenarios.
+Several examples can be found in the `examples` directory of this repository.
 
 ## Contributing
 
