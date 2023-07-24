@@ -8,8 +8,11 @@ from openai_functools.metadata_generator import \
 
 class FunctionsOrchestrator:
     def __init__(self, functions: Optional[List[Callable]] = None) -> None:
-        self._functions = functions if functions is not None else []
-        self._function_specs = self._create_function_specs(self._functions)
+        self._functions = []
+        self._function_specs = []
+
+        for function in functions:
+            self._add_function(function)
 
     @property
     def functions(self) -> List[Callable]:
@@ -17,20 +20,34 @@ class FunctionsOrchestrator:
 
     @functions.setter
     def functions(self, functions: List[Callable]) -> None:
-        self._functions = functions
-        self._function_specs = self._create_function_specs(self._functions)
+        for function in functions:
+            self._add_function(function)
 
     @property
     def function_specs(self) -> List[FunctionSpec]:
         return self._function_specs
 
     def register(self, function: Callable) -> None:
-        self._functions.append(function)
-        self._function_specs.append(self._create_function_spec(function))
+        self._add_function(function)
 
     def register_all(self, functions: List[Callable]) -> None:
-        self._functions.extend(functions)
-        self._function_specs.extend(self._create_function_specs(functions))
+
+        for function in functions:
+            self._add_function(function)
+
+    def _add_function(self, function: Callable) -> None:
+
+        if self._functions is None:
+            self._functions = []
+            self._function_specs = []
+
+        if function.__name__ in self._functions:
+            raise ValueError(
+                f'Function "{function.__name__}" is already registered.'
+            )
+
+        self._functions.append(function)
+        self._function_specs.append(self._create_function_spec(function))
 
     def function(self, func: Optional[Callable] = None):
         if func is not None:
