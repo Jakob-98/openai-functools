@@ -33,7 +33,7 @@ jobs:
 
     - name: Update version
       run: |
-        version="0.2.${GITHUB_RUN_NUMBER}"
+        version="1.0.${GITHUB_RUN_NUMBER}"
         sed -i "s/version = .*/version = \"$version\"/" pyproject.toml
 
     - name: Build distributions
