@@ -43,8 +43,7 @@ def run_conversation():
         function_call="auto",
     )
     response_message = response["choices"][0]["message"]
-    print("response message")
-    print(response_message)
+    print(f"response message: {response_message}")
 
     if response_message.get("function_call"):
         available_functions = {"get_current_weather": get_current_weather}
@@ -55,7 +54,6 @@ def run_conversation():
             location=function_args.get("location"),
             unit=function_args.get("unit"),
         )
-
         messages.append(response_message)
         messages.append(
             {"role": "function", "name": function_name, "content": function_response}

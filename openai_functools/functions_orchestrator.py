@@ -43,14 +43,13 @@ class FunctionsOrchestrator:
 
         return wrapper
 
-    def call_functions(self, openai_response: dict) -> dict:
+    def call_function(self, openai_response: dict) -> dict:
         response_message = openai_response["choices"][0]["message"]
         responses = {}
 
         if function_call := response_message.get("function_call"):
             function_name = function_call["name"]
             function_args = json.loads(function_call["arguments"])
-
             function = self._get_matching_function(function_name)
 
             if function is None:

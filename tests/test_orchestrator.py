@@ -61,7 +61,7 @@ def test_orchestrator_function_descriptions(expected_metadata, weather_function)
 
 def test_orchestrator_call_functions(weather_chat_response, weather_function):
     orchestrator = FunctionsOrchestrator(functions=[weather_function])
-    results = orchestrator.call_functions(weather_chat_response)
+    results = orchestrator.call_function(weather_chat_response)
     assert results == {
         "get_current_weather": '{"location": "Boston", '
         '"temperature": "72", '
@@ -74,7 +74,7 @@ def test_call_unregistered_function_raises_error():
     orchestrator = FunctionsOrchestrator()
 
     with pytest.raises(ValueError):
-        orchestrator.call_functions(
+        orchestrator.call_function(
             {
                 "choices": [
                     {

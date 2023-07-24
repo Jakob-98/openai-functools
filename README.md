@@ -58,6 +58,7 @@ def run_conversation():
 Instead, our **novel approach**, we automatically generate the neccesary function parameters, and the above now becomes:
 
 ```python
+import json
 from openai_functools import openai_function
 
 @openai_function
@@ -75,13 +76,50 @@ def run_conversation():
     functions = [
         get_current_weather.openai_metadata
     ]
-
 ```
 
 ### Using the orchestrator
 
-**todo**
+```python
+from openai_functools import FunctionsOrchestrator
 
+def get_current_weather(location, unit="fahrenheit"):
+    """Get the current weather forecast in a given location"""
+    weather_info = {
+        "location": location,
+        "temperature": "72",
+        "unit": unit,
+        "forecast": ["sunny", "windy"],
+    }
+    return json.dumps(weather_info)
+
+def get_weather_next_day(location, unit="fahrenheit"):
+    """Get the weather forecast for the next day in a given location"""
+    weather_info = {
+        "location": location,
+        "temperature": "78",
+        "unit": unit,
+        "forecast": ["sunny", "windy"],
+    }
+    return json.dumps(weather_info)
+
+orchestrator = FunctionsOrchestrator()
+orchestrator.register_all([get_current_weather, get_weather_next_day])
+response = openai.ChatCompletion.create(
+    model="gpt-3.5-turbo-0613",
+    messages=[{"role": "user", "content": "What's the weather like in Boston?"}],
+    functions=orchestrator.create_function_descriptions(),
+    function_call="auto",
+)
+function_results = orchestrator.call_function(response)
+response = openai.ChatCompletion.create(
+    model="gpt-3.5-turbo-0613",
+    messages=[{"role": "user", "content": "What's the weather like in Boston tomorrow?"}],
+    functions=orchestrator.create_function_descriptions(),
+    function_call="auto",
+)
+function_results = orchestrator.call_function(response)
+```
 ### Using docstrings to enhance metadata
 
 By using docstrings in your functions, we are able to extract more information to fill in the descriptions of the function and its properties. This will automatically be added to the openai function metadata, and will help the model better understand the functions and parameters.
