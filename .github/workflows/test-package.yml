@@ -6,6 +6,8 @@ on:
   push:
     branches:
       - '*'
+    paths:
+      - 'openai_functools/**'
   pull_request:
     branches:
       - '*'
