@@ -1,10 +1,10 @@
 import json
 import os
 import openai
-from openai_functools import function_metadata_decorator, FunctionSpec
+from openai_functools import openai_function, FunctionSpec
 
 
-@function_metadata_decorator
+@openai_function
 def get_current_weather(location, unit="fahrenheit"):
     weather_info = {
         "location": location,
@@ -25,16 +25,11 @@ if __name__ == "__main__":
             parameters=get_current_weather.metadata
         )
     ]
-
     response = openai.ChatCompletion.create(
         model=openai_model,
         messages=messages,
-        functions=functions,
+        functions=function_specs,
         function_call="auto",
     )
-    messages = [
-        {"role": "user", "content": "What's the weather like in New York?"}
-    ]
-
-    response = openai_service.call_function(messages)
-    print(response)
+    response_message = response["choices"][0]["message"]
+    print(f"response message: {response_message}")
