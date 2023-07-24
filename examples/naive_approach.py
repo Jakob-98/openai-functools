@@ -1,8 +1,10 @@
-import openai
 import json
 import os
 
-openai.api_key  = os.getenv("OPENAI_API_KEY")
+import openai
+
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
 
 def get_current_weather(location, unit="fahrenheit"):
     weather_info = {
@@ -12,6 +14,7 @@ def get_current_weather(location, unit="fahrenheit"):
         "forecast": ["sunny", "windy"],
     }
     return json.dumps(weather_info)
+
 
 def run_conversation():
     messages = [{"role": "user", "content": "What's the weather like in London?"}]
@@ -62,5 +65,6 @@ def run_conversation():
             messages=messages,
         )
         return second_response
+
 
 run_conversation()
