@@ -1,7 +1,7 @@
 import json
 
 from pytest import fixture
-import json
+
 
 @fixture
 def weather_function():
@@ -111,17 +111,15 @@ def weather_chat_response():
                     "content": "null",
                     "function_call": {
                         "name": "get_current_weather",
-                        "arguments": "{\n  \"location\": \"Boston\"\n}"
-                    }
+                        "arguments": '{\n  "location": "Boston"\n}',
+                    },
                 },
-                "finish_reason": "function_call"
+                "finish_reason": "function_call",
             }
         ],
-        "usage": {
-            "prompt_tokens": 68,
-            "completion_tokens": 16,
-            "total_tokens": 84
-        }
+        "usage": {"prompt_tokens": 68, "completion_tokens": 16, "total_tokens": 84},
+    }
+
 
 @fixture
 def expected_no_parameters_metadata():

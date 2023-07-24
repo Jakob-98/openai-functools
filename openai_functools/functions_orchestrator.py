@@ -1,19 +1,21 @@
 import json
 from typing import Any
 
-from .function_spec import FunctionSpec
-from .metadata_generator import extract_function_metadata
+from openai_functools.function_spec import FunctionSpec
+from openai_functools.metadata_generator import extract_openai_function_metadata
 
 
 class FunctionsOrchestrator:
-
     def __init__(self, functions=None):
         if functions is None:
             functions = []
         self._functions = functions
         self._function_specs = []
-        self._function_specs = self._create_function_specs(self.functions) \
-            if self.functions is not None else []
+        self._function_specs = (
+            self._create_function_specs(self.functions)
+            if self.functions is not None
+            else []
+        )
 
     @property
     def functions(self):
@@ -22,8 +24,11 @@ class FunctionsOrchestrator:
     @functions.setter
     def functions(self, functions):
         self._functions = functions
-        self._function_specs = self._create_function_specs(self.functions) \
-            if self.functions is not None else []
+        self._function_specs = (
+            self._create_function_specs(self.functions)
+            if self.functions is not None
+            else []
+        )
 
     @property
     def function_specs(self):
@@ -42,12 +47,12 @@ class FunctionsOrchestrator:
         self.function_specs.extend(self._create_function_specs(functions))
 
     def function(self, function):
-
         if function:
             self.functions.append(function)
             self.function_specs.append(self._create_function_spec(function))
             return function
         else:
+
             def wrapper(f):
                 self.functions.append(f)
                 self.function_specs.append(self._create_function_spec(f))
@@ -61,16 +66,14 @@ class FunctionsOrchestrator:
 
         if response_message.get("function_call"):
             function_name = response_message["function_call"]["name"]
-            function_args = json.loads(
-                response_message["function_call"]["arguments"]
-            )
+            function_args = json.loads(response_message["function_call"]["arguments"])
 
             function = self._get_matching_function(function_name)
 
             if function is None:
                 raise ValueError(
                     f'Function "{function_name}" is not '
-                    f'registered with the orchestrator.'
+                    f"registered with the orchestrator."
                 )
 
             responses[function_name] = function(**function_args)
@@ -90,8 +93,7 @@ class FunctionsOrchestrator:
     @staticmethod
     def _create_function_spec(function):
         return FunctionSpec(
-            func_ref=function,
-            parameters=extract_function_metadata(function)
+            func_ref=function, parameters=extract_openai_function_metadata(function)
         )
 
     @property
