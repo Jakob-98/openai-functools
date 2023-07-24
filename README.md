@@ -22,6 +22,8 @@ cd openai-functools
 poetry install
 ```
 
+Ensure your environment variable `OPENAI_API_KEY` is set.
+
 ## Usage
 
 To use `openai-functools`, import the package and wrap your function with the provided decorator. First, a **naive example** which does not use our libary (see `./examples/naive_approach.py`):
