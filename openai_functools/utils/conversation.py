@@ -14,6 +14,10 @@ class Conversation:
             }
         self.conversation_history.append(message)
 
-    def display_conversation(self, detailed=False):
+    def display_conversation(self):
         for message in self.conversation_history:
             print(f"{message['role']}: {message['content']}\n\n")
+
+    def display_last_message(self):
+        last_message = self.conversation_history[-1]
+        print(f"{last_message['role']}: {last_message['content']}\n\n")
