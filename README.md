@@ -1,10 +1,24 @@
 # [openai-functools](https://github.com/Jakob-98/openai-functools)
 
-`openai-functools` is a Python library designed to enhance the functionality of OpenAI's `gpt-3.5-turbo-0613` and `gpt-4-0613` models for function calling, [ref. the OpenAI official docs](https://platform.openai.com/docs/guides/gpt/function-calling). This library focuses on generating the required JSON/dictionary/metadata automatically by wrapping existing Python functions in our decorator. This removes the need for you to manually create and manage the JSON structures required for function calling in these models.
+`openai-functools` is a Python library designed to enhance the functionality of OpenAI's `gpt-3.5-turbo-0613` and `gpt-4-0613` models for function calling, [ref. the OpenAI official docs](https://platform.openai.com/docs/guides/gpt/function-calling). This library focuses on generating the function metadata JSON automatically by wrapping existing Python functions in our decorator, or by registering them with our orchestrator. This removes the need for you to manually create and manage the JSON structures required for function calling in these models.
 
 ## Why openai-functools
 
-![example](https://github.com/Jakob-98/openai-functools/blob/7641fd5d34beca9c1b690d06cd18e40fde6a2a49/example.png)
+The image below illustrates the reduction of code which needs to be manually written. The snippets in green are interchangeable with use of our library.
+
+![example](https://github.com/Jakob-98/openai-functools/blob/2386154affcbef824f48e1712aa3dbd2b7de9a82/assets/example.png)
+
+### ?... So what is OpenAI Function Calling?
+
+OpenAI function calling provides a powerful mechanism to extend the capabilities of AI models, like gpt-3.5-turbo-0613 and gpt-4-0613. In an API call, these models can understand a set of functions described to them and generate JSON outputs that adhere to the defined function signatures.
+
+These models *don't actually perform the function calls* - they merely generate the JSON data that you can use in your code to call these functions. This ability allows for a wide range of applications, such as creating chatbots that call external APIs, converting natural language into API calls, and extracting structured data from text.
+
+Typical openai functions flow:
+
+![openai-functions-flow](./assets/openai-functions.png)
+
+[ref. the OpenAI official docs](https://platform.openai.com/docs/guides/gpt/function-calling).
 
 ## Installation
 
