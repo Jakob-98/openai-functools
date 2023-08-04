@@ -123,7 +123,6 @@ class FunctionsOrchestrator:
             dict: The responses from the called function.
         """
         response_message = openai_response["choices"][0]["message"]
-        responses = {}
 
         if function_call := response_message.get("function_call"):
             function_name = function_call["name"]
@@ -136,9 +135,15 @@ class FunctionsOrchestrator:
                     f"registered with the orchestrator."
                 )
 
-            responses[function_name] = function(**function_args)
+            function_response = function(**function_args)
 
-        return responses
+            try:
+                if not isinstance(function_response, str):
+                    function_response = json.dumps(function_response)
+            except (TypeError, ValueError):
+                function_response = str(function_response)
+
+        return function_response
 
     def _get_matching_function(self, function_name: str) -> Optional[Callable]:
         """

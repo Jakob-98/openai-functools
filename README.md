@@ -78,7 +78,7 @@ def run_conversation():
     # Proceed with calling openai, invoking the function using the response, etc..
 ```
 
-### Enhanced Automatic Approach
+### Automated Approach using openai-functools
 
 The `openai-functools` library simplifies the process by automatically generating the necessary JSON structure. You just need to import our package and wrap your function with the `openai_function` decorator. Here's how it works:
 
@@ -127,7 +127,7 @@ orchestrator.register_all([get_current_weather, get_weather_next_day])
 
 #### Registering Functions
 
-Functions can be registered using the `register_all` or `register` method as shown in the code snippet above. `register_all` accepts a list of functions, while `register` is used to register a single function. 
+Functions can be registered using the `register_all` or `register` method as shown in the code snippet above. `register_all` accepts a list of functions, while `register` is used to register a single function.
 
 ### Creating and Using Function Descriptions
 
@@ -171,6 +171,11 @@ Currently, only "reStructuredText" (reST) is supported by default, although this
 ## Examples
 
 Several examples can be found in the `examples` directory of this repository.
+
+1. The [Maintenance app usecase](./examples/maintenance_app_usecase/) is the recommended example to analyse, it shows the power of the library in a (spoofed) real-world setting.
+1. The [Naive approach example](./examples/naive_approach.py) shows how to call openai-functions without use of the library.
+1. The [Simple example](./examples/simple_example.py) is similar to the naive approach, but makes use our decorator.
+1. The [Orchestrator example](./examples/orchestrator_example.py) shows how one can use the orchestrator class.
 
 ## Contributing
 
