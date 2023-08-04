@@ -32,16 +32,12 @@ class FunctionsOrchestrator:
         self._add_function(function)
 
     def register_all(self, functions: List[Callable]) -> None:
-
         for function in functions:
             self._add_function(function)
 
     def _add_function(self, function: Callable) -> None:
-
         if not callable(function):
-            raise TypeError(
-                f'Function "{function}" is not callable.'
-            )
+            raise TypeError(f'Function "{function}" is not callable.')
 
         if self._functions is None:
             self._functions = []
@@ -50,9 +46,7 @@ class FunctionsOrchestrator:
         matching_function = self._get_matching_function(function.__name__)
 
         if matching_function is not None:
-            raise ValueError(
-                f'Function "{function.__name__}" is already registered.'
-            )
+            raise ValueError(f'Function "{function.__name__}" is already registered.')
 
         self._functions.append(function)
         self._function_specs.append(self._create_function_spec(function))
@@ -91,7 +85,6 @@ class FunctionsOrchestrator:
                 function_response = str(function_response)
 
         return function_response
-
 
     def _get_matching_function(self, function_name: str) -> Optional[Callable]:
         for spec in self._function_specs:
