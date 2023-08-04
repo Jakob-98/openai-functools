@@ -1,4 +1,5 @@
 import json
+import logging
 from typing import Any, Callable, Dict, List, Optional
 
 from openai_functools.function_spec import FunctionSpec
@@ -8,6 +9,7 @@ from openai_functools.metadata_generator import \
 
 class FunctionsOrchestrator:
     def __init__(self, functions: Optional[List[Callable]] = None) -> None:
+        logging.info("Called FunctionsOrchestrator.__init__")
         self._functions = []
         self._function_specs = []
 
@@ -29,7 +31,9 @@ class FunctionsOrchestrator:
         return self._function_specs
 
     def register(self, function: Callable) -> None:
+        logging.info(f"Called register with function {function.__name__}")
         self._add_function(function)
+        logging.info(f"Completed register with function {function.__name__}")
 
     def register_all(self, functions: List[Callable]) -> None:
 
@@ -37,8 +41,10 @@ class FunctionsOrchestrator:
             self._add_function(function)
 
     def _add_function(self, function: Callable) -> None:
+        logging.info(f"Called _add_function with function {function.__name__}")
 
         if not callable(function):
+            logging.error(f'Function "{function}" is not callable.')
             raise TypeError(
                 f'Function "{function}" is not callable.'
             )
@@ -54,8 +60,10 @@ class FunctionsOrchestrator:
                 f'Function "{function.__name__}" is already registered.'
             )
 
+        logging.info(f"Adding function {function.__name__} to _functions and _function_specs")
         self._functions.append(function)
         self._function_specs.append(self._create_function_spec(function))
+        logging.info(f"Completed _add_function with function {function.__name__}")
 
     def function(self, func: Optional[Callable] = None):
         if func is not None:
@@ -78,6 +86,7 @@ class FunctionsOrchestrator:
             function = self._get_matching_function(function_name)
 
             if function is None:
+                logging.error(f'Function "{function_name}" is not registered with the orchestrator.')
                 raise ValueError(
                     f'Function "{function_name}" is not '
                     f"registered with the orchestrator."
@@ -98,9 +107,12 @@ class FunctionsOrchestrator:
 
     @staticmethod
     def _create_function_spec(function: Callable) -> FunctionSpec:
-        return FunctionSpec(
+        logging.info(f"Called _create_function_spec with function {function.__name__}")
+        spec = FunctionSpec(
             func_ref=function, parameters=extract_openai_function_metadata(function)
         )
+        logging.info(f"Completed _create_function_spec with function {function.__name__}")
+        return spec
 
     @property
     def function_descriptions(self) -> List[Dict[str, Any]]:
