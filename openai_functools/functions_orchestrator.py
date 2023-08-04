@@ -10,10 +10,11 @@ class FunctionsOrchestrator:
     """
     Orchestrates the functions used in the OpenAI function calling models.
     """
+
     def __init__(self, functions: Optional[List[Callable]] = None) -> None:
         """
         Initializes the FunctionsOrchestrator with an optional list of functions.
-        
+
         Args:
             functions (Optional[List[Callable]]): A list of functions to be registered.
         """
@@ -28,7 +29,7 @@ class FunctionsOrchestrator:
     def functions(self) -> List[Callable]:
         """
         Returns the list of registered functions.
-        
+
         Returns:
             List[Callable]: The list of registered functions.
         """
@@ -38,7 +39,7 @@ class FunctionsOrchestrator:
     def functions(self, functions: List[Callable]) -> None:
         """
         Sets the list of registered functions.
-        
+
         Args:
             functions (List[Callable]): A list of functions to be registered.
         """
@@ -49,7 +50,7 @@ class FunctionsOrchestrator:
     def function_specs(self) -> List[FunctionSpec]:
         """
         Returns the list of function specifications for the registered functions.
-        
+
         Returns:
             List[FunctionSpec]: The list of function specifications.
         """
@@ -58,7 +59,7 @@ class FunctionsOrchestrator:
     def register(self, function: Callable) -> None:
         """
         Registers a function.
-        
+
         Args:
             function (Callable): The function to be registered.
         """
@@ -67,7 +68,7 @@ class FunctionsOrchestrator:
     def register_all(self, functions: List[Callable]) -> None:
         """
         Registers a list of functions.
-        
+
         Args:
             functions (List[Callable]): The list of functions to be registered.
         """
@@ -76,11 +77,8 @@ class FunctionsOrchestrator:
             self._add_function(function)
 
     def _add_function(self, function: Callable) -> None:
-
         if not callable(function):
-            raise TypeError(
-                f'Function "{function}" is not callable.'
-            )
+            raise TypeError(f'Function "{function}" is not callable.')
 
         if self._functions is None:
             self._functions = []
@@ -89,9 +87,7 @@ class FunctionsOrchestrator:
         matching_function = self._get_matching_function(function.__name__)
 
         if matching_function is not None:
-            raise ValueError(
-                f'Function "{function.__name__}" is already registered.'
-            )
+            raise ValueError(f'Function "{function.__name__}" is already registered.')
 
         self._functions.append(function)
         self._function_specs.append(self._create_function_spec(function))
@@ -99,10 +95,10 @@ class FunctionsOrchestrator:
     def function(self, func: Optional[Callable] = None):
         """
         Registers a function if provided, otherwise returns a decorator for function registration.
-        
+
         Args:
             func (Optional[Callable]): The function to be registered, if provided.
-            
+
         Returns:
             Callable: The registered function or a decorator for function registration.
         """
@@ -119,10 +115,10 @@ class FunctionsOrchestrator:
     def call_function(self, openai_response: dict) -> dict:
         """
         Calls a function based on the OpenAI response.
-        
+
         Args:
             openai_response (dict): The OpenAI response containing the function call information.
-            
+
         Returns:
             dict: The responses from the called function.
         """
@@ -147,10 +143,10 @@ class FunctionsOrchestrator:
     def _get_matching_function(self, function_name: str) -> Optional[Callable]:
         """
         Returns the function that matches the provided function name, if it exists.
-        
+
         Args:
             function_name (str): The name of the function to be retrieved.
-            
+
         Returns:
             Optional[Callable]: The matching function, or None if no match is found.
         """
@@ -162,10 +158,10 @@ class FunctionsOrchestrator:
     def _create_function_specs(self, functions: List[Callable]) -> List[FunctionSpec]:
         """
         Creates function specifications for a list of functions.
-        
+
         Args:
             functions (List[Callable]): The list of functions for which to create specifications.
-            
+
         Returns:
             List[FunctionSpec]: The list of created function specifications.
         """
@@ -175,10 +171,10 @@ class FunctionsOrchestrator:
     def _create_function_spec(function: Callable) -> FunctionSpec:
         """
         Creates a function specification for a function.
-        
+
         Args:
             function (Callable): The function for which to create a specification.
-            
+
         Returns:
             FunctionSpec: The created function specification.
         """
@@ -190,7 +186,7 @@ class FunctionsOrchestrator:
     def function_descriptions(self) -> List[Dict[str, Any]]:
         """
         Returns the descriptions of the registered functions.
-        
+
         Returns:
             List[Dict[str, Any]]: The list of function descriptions.
         """
@@ -201,10 +197,10 @@ class FunctionsOrchestrator:
     ) -> List[Dict[str, Any]]:
         """
         Creates descriptions for the selected functions.
-        
+
         Args:
             selected_functions (Optional[List[str]]): The list of selected function names. If None, descriptions for all registered functions are created.
-            
+
         Returns:
             List[Dict[str, Any]]: The list of created function descriptions.
         """
