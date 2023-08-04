@@ -62,12 +62,10 @@ def test_orchestrator_function_descriptions(expected_metadata, weather_function)
 def test_orchestrator_call_functions(weather_chat_response, weather_function):
     orchestrator = FunctionsOrchestrator(functions=[weather_function])
     results = orchestrator.call_function(weather_chat_response)
-    assert results == {
-        "get_current_weather": '{"location": "Boston", '
-        '"temperature": "72", '
-        '"unit": "fahrenheit", '
-        '"forecast": ["sunny", "windy"]}'
-    }
+    assert (
+        results
+        == '{"location": "Boston", "temperature": "72", "unit": "fahrenheit", "forecast": ["sunny", "windy"]}'
+    )
 
 
 def test_call_unregistered_function_raises_error():
