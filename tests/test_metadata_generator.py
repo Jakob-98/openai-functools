@@ -44,3 +44,13 @@ def test_no_parameters_metadata_decorator(
     assert (
         decorated_function.openai_metadata == expected_no_parameters_metadata
     ), f"Expected {expected_no_parameters_metadata}, but got {decorated_function.openai_metadata}"
+
+def test_function_with_literal_should_become_enum(
+    function_with_literal, expected_function_with_literal_metadata
+):
+    """Test that the decorator can handle functions with Literal."""
+    decorated_function = openai_function(function_with_literal)
+    decorated_function()
+    assert (
+        decorated_function.openai_metadata == expected_function_with_literal_metadata
+    ), f"Expected {expected_function_with_literal_metadata}, but got {decorated_function.openai_metadata}"

@@ -2,6 +2,8 @@ import json
 
 from pytest import fixture
 
+from typing import Literal
+
 
 @fixture
 def weather_function():
@@ -130,6 +132,33 @@ def expected_no_parameters_metadata():
         "parameters": {
             "type": "object",
             "properties": {},
+            "required": [],
+        },
+    }
+
+
+@fixture
+def function_with_literal():
+    def literal_function(string_literal: str = Literal["foo", "bar"]) -> str:
+        return f"Hello, {string_literal}!"
+
+    return literal_function
+
+@fixture
+def expected_function_with_literal_metadata():
+    return {
+        "name": "literal_function",
+        "description": "literal_function",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "string_literal": {
+                    "type": "string",
+                    "description": "string_literal",
+                    "enum": ["foo", "bar"],
+                    "default": "foo",
+                },
+            },
             "required": [],
         },
     }
