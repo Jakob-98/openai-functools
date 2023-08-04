@@ -6,7 +6,7 @@
 
 The image below illustrates the reduction of code which needs to be manually written. The snippets in green are interchangeable with use of our library.
 
-![example](https://github.com/Jakob-98/openai-functools/blob/assets/example.png)
+![example]([https://github.com/Jakob-98/openai-functools/blob/assets/example.png](https://github.com/Jakob-98/openai-functools/blob/2386154affcbef824f48e1712aa3dbd2b7de9a82/assets/example.png))
 
 ### ?... So what is OpenAI Function Calling?
 
