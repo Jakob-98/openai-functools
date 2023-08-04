@@ -1,0 +1,19 @@
+@startuml
+
+autonumber
+actor User
+participant "OpenAI Model" as A
+participant "User's Code\n(Python)" as B
+
+User -> A: Sends request with function metadata
+note right: The user's request contains\na set of potential functions to be used.
+A -> A: Decides which function to use
+A -> User: Responds with JSON
+User -> B: Parse the JSON
+B -> B: Execute the function locally
+note right: This function call happens in\nthe user's local Python environment.
+B -> A: Send function response as a new message
+A -> A: Summarize the result
+A -> User: Returns valid response using function data
+
+@enduml
