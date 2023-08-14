@@ -1,7 +1,7 @@
 import inspect
 import typing
 from functools import wraps
-from typing import Any, Callable, get_type_hints, Literal
+from typing import Any, Callable, get_type_hints
 
 from docstring_parser import parse
 
@@ -44,6 +44,7 @@ def extract_openai_function_metadata(func: Callable) -> dict:
         },
     }
     return metadata
+
 
 def extract_literal_allowed_values(func):
     signature = inspect.signature(func)
