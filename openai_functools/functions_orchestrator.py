@@ -135,15 +135,11 @@ class FunctionsOrchestrator:
                     f"registered with the orchestrator."
                 )
 
-            function_response = function(**function_args)
-
-            try:
-                if not isinstance(function_response, str):
-                    function_response = json.dumps(function_response)
-            except (TypeError, ValueError):
-                function_response = str(function_response)
-
-        return function_response
+            return function(**function_args)
+        else:
+            raise ValueError(
+                f'Function call information not found in response message "{response_message}".'
+            )
 
     def _get_matching_function(self, function_name: str) -> Optional[Callable]:
         """
