@@ -1,4 +1,5 @@
 import json
+from enum import Enum
 
 from pytest import fixture
 

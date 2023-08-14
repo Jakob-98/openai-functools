@@ -1,5 +1,3 @@
-import pytest
-
 from openai_functools.metadata_generator import (
     extract_openai_function_metadata, openai_function)
 
@@ -44,6 +42,7 @@ def test_no_parameters_metadata_decorator(
     assert (
         decorated_function.openai_metadata == expected_no_parameters_metadata
     ), f"Expected {expected_no_parameters_metadata}, but got {decorated_function.openai_metadata}"
+
 
 def test_function_with_literal_should_become_enum(
     function_with_literal, expected_function_with_literal_metadata
