@@ -137,10 +137,22 @@ class FunctionsOrchestrator:
 
             function_response = function(**function_args)
 
+            if isinstance(function_response, str):
+            function_response = function(**function_args)
+
+            if isinstance(function_response, str):
+                return function_response
+
             try:
                 json.dumps(function_response)
-            except TypeError:
-                raise TypeError("The function response must be JSON serializable.")
+            except (TypeError, ValueError) as e:
+                if isinstance(e, TypeError):
+                    raise TypeError("The function response must be JSON serializable.")
+                else:
+                    raise ValueError("An error occurred while serializing the function response to JSON.")
+                    raise TypeError("The function response must be JSON serializable.")
+                else:
+                    raise ValueError("An error occurred while serializing the function response to JSON.")
 
         return function_response
 
