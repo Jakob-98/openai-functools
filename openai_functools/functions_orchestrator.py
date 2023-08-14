@@ -135,26 +135,11 @@ class FunctionsOrchestrator:
                     f"registered with the orchestrator."
                 )
 
-            function_response = function(**function_args)
-
-            if isinstance(function_response, str):
-            function_response = function(**function_args)
-
-            if isinstance(function_response, str):
-                return function_response
-
-            try:
-                json.dumps(function_response)
-            except (TypeError, ValueError) as e:
-                if isinstance(e, TypeError):
-                    raise TypeError("The function response must be JSON serializable.")
-                else:
-                    raise ValueError("An error occurred while serializing the function response to JSON.")
-                    raise TypeError("The function response must be JSON serializable.")
-                else:
-                    raise ValueError("An error occurred while serializing the function response to JSON.")
-
-        return function_response
+            return function(**function_args)
+        else:
+            raise ValueError(
+                f'Function call information not found in response message "{response_message}".'
+            )
 
     def _get_matching_function(self, function_name: str) -> Optional[Callable]:
         """
