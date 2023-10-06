@@ -82,7 +82,9 @@ def extract_parameter_properties(
 
 
 def construct_function_name(func: Callable) -> str:
+    """ Constructs a function name to uniquely identify a function or a method of an instance"""
     if not hasattr(func, "__self__"):
         return func.__name__
     else:
+        # A hash is used to uniquely identify an instance
         return f"{func.__self__.__hash__()}__{func.__name__}"

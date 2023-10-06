@@ -33,7 +33,7 @@ class WeatherService:
 
 weatherService = WeatherService("Boston")
 orchestrator = FunctionsOrchestrator()
-orchestrator.register_instance_methods([weatherService])
+orchestrator.register_instance(weatherService)
 
 # You can also register methods individually:
 # orchestrator.register_all([weatherService.get_current_weather, weatherService.get_weather_next_day])

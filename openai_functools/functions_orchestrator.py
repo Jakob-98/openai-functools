@@ -3,9 +3,7 @@ from typing import Any, Callable, Dict, List, Optional
 
 from openai_functools.function_spec import FunctionSpec
 from openai_functools.metadata_generator import (
-    extract_openai_function_metadata,
-    construct_function_name,
-)
+    construct_function_name, extract_openai_function_metadata)
 
 
 class FunctionsOrchestrator:
@@ -57,7 +55,7 @@ class FunctionsOrchestrator:
         Returns:
             List[FunctionSpec]: The list of function specifications.
         """
-        return self._function_specs
+        return self._functions.values()
 
     def register(self, function: Callable) -> None:
         """
@@ -79,19 +77,30 @@ class FunctionsOrchestrator:
         for function in functions:
             self._add_function(function)
 
-    def register_instances(self, instances: List[Any]) -> None:
+    def register_instance(self, instance: Any) -> None:
         """
-        Registers all methods of instances.
+        Registers all methods of a single instance.
 
         Args:
-            instances (Any): The instance whose methods are to be registered.
+            instance (Any): The instance whose methods are to be registered.
+        """
+
+        for method_name in dir(instance):
+            method = getattr(instance, method_name)
+            if not method_name.startswith("__") and callable(method):
+                self._add_function(getattr(instance, method_name))
+
+    def register_instances_all(self, instances: List[Any]):
+        """
+        Registers all methods of all instances.
+
+        Args:
+            instances (Any): The instances whose methods are to be registered.
         """
 
         for instance in instances:
-            for method_name in dir(instance):
-                method = getattr(instance, method_name)
-                if not method_name.startswith("__") and callable(method):
-                    self._add_function(getattr(instance, method_name))
+            self.register_instance(instance)
+
 
     def _add_function(self, function: Callable) -> None:
         if not callable(function):

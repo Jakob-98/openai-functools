@@ -1,9 +1,8 @@
 import json
 from enum import Enum
+from typing import Literal
 
 from pytest import fixture
-
-from typing import Literal
 
 
 @fixture
