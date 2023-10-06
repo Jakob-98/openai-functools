@@ -2,14 +2,18 @@ import json
 from typing import Any, Callable, Dict, List, Optional
 
 from openai_functools.function_spec import FunctionSpec
-from openai_functools.metadata_generator import \
-    extract_openai_function_metadata
+from openai_functools.metadata_generator import (
+    extract_openai_function_metadata,
+    construct_function_name,
+)
 
 
 class FunctionsOrchestrator:
     """
     Orchestrates the functions used in the OpenAI function calling models.
     """
+
+    _functions: Dict[str, FunctionSpec]
 
     def __init__(self, functions: Optional[List[Callable]] = None) -> None:
         """
@@ -18,8 +22,7 @@ class FunctionsOrchestrator:
         Args:
             functions (Optional[List[Callable]]): A list of functions to be registered.
         """
-        self._functions = []
-        self._function_specs = []
+        self._functions = {}
 
         if functions is not None:
             for function in functions:
@@ -76,21 +79,29 @@ class FunctionsOrchestrator:
         for function in functions:
             self._add_function(function)
 
+    def register_instances(self, instances: List[Any]) -> None:
+        """
+        Registers all methods of instances.
+
+        Args:
+            instances (Any): The instance whose methods are to be registered.
+        """
+
+        for instance in instances:
+            for method_name in dir(instance):
+                method = getattr(instance, method_name)
+                if not method_name.startswith("__") and callable(method):
+                    self._add_function(getattr(instance, method_name))
+
     def _add_function(self, function: Callable) -> None:
         if not callable(function):
             raise TypeError(f'Function "{function}" is not callable.')
 
-        if self._functions is None:
-            self._functions = []
-            self._function_specs = []
-
-        matching_function = self._get_matching_function(function.__name__)
-
-        if matching_function is not None:
+        function_name = construct_function_name(function)
+        if function_name in self._functions:
             raise ValueError(f'Function "{function.__name__}" is already registered.')
 
-        self._functions.append(function)
-        self._function_specs.append(self._create_function_spec(function))
+        self._functions[function_name] = self._create_function_spec(function)
 
     def function(self, func: Optional[Callable] = None):
         """
@@ -127,7 +138,7 @@ class FunctionsOrchestrator:
         if function_call := response_message.get("function_call"):
             function_name = function_call["name"]
             function_args = json.loads(function_call["arguments"])
-            function = self._get_matching_function(function_name)
+            function = self._functions[function_name]
 
             if function is None:
                 raise ValueError(
@@ -135,26 +146,11 @@ class FunctionsOrchestrator:
                     f"registered with the orchestrator."
                 )
 
-            return function(**function_args)
+            return function.func_ref(**function_args)
         else:
             raise ValueError(
                 f'Function call information not found in response message "{response_message}".'
             )
-
-    def _get_matching_function(self, function_name: str) -> Optional[Callable]:
-        """
-        Returns the function that matches the provided function name, if it exists.
-
-        Args:
-            function_name (str): The name of the function to be retrieved.
-
-        Returns:
-            Optional[Callable]: The matching function, or None if no match is found.
-        """
-        for spec in self._function_specs:
-            if spec.name == function_name:
-                return spec.func_ref
-        return None
 
     def _create_function_specs(self, functions: List[Callable]) -> List[FunctionSpec]:
         """
@@ -180,7 +176,9 @@ class FunctionsOrchestrator:
             FunctionSpec: The created function specification.
         """
         return FunctionSpec(
-            func_ref=function, parameters=extract_openai_function_metadata(function)
+            func_name=construct_function_name(function),
+            func_ref=function,
+            parameters=extract_openai_function_metadata(function),
         )
 
     @property
@@ -191,7 +189,7 @@ class FunctionsOrchestrator:
         Returns:
             List[Dict[str, Any]]: The list of function descriptions.
         """
-        return [spec.parameters for spec in self._function_specs]
+        return [spec.parameters for spec in self._functions.values()]
 
     def create_function_descriptions(
         self, selected_functions: Optional[List[str]] = None
@@ -206,10 +204,12 @@ class FunctionsOrchestrator:
             List[Dict[str, Any]]: The list of created function descriptions.
         """
         specs = (
-            self._function_specs
+            self._functions.values()
             if selected_functions is None
             else [
-                spec for spec in self._function_specs if spec.name in selected_functions
+                spec
+                for spec in self._functions.values()
+                if spec.name in selected_functions
             ]
         )
         return [spec.parameters for spec in specs]

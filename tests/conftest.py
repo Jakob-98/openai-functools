@@ -145,6 +145,7 @@ def function_with_literal():
 
     return literal_function
 
+
 @fixture
 def expected_function_with_literal_metadata():
     return {
