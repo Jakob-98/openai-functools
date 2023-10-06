@@ -5,7 +5,7 @@ from typing import Any, Callable, get_type_hints
 
 from docstring_parser import parse
 
-from openai_functools.types import python_type_to_openapi_type
+from openai_functools.openai_types import python_type_to_openapi_type
 
 
 def openai_function(func: Callable) -> Callable:
