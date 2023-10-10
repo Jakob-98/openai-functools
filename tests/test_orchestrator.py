@@ -2,20 +2,7 @@ import pytest
 
 from openai_functools import FunctionsOrchestrator
 
-
-def test_orchestrator_initialization_with_standard_functions():
-    def function_one():
-        return "function_one"
-
-    def function_two():
-        return "function_two"
-
-    orchestrator = FunctionsOrchestrator(functions=[function_one, function_two])
-    assert orchestrator.functions == [function_one, function_two]
-    assert orchestrator.function_specs != []
-
-
-def test_orchestrator_initialization_with_decorated_functions():
+def test_orchestrator_initialization_with_decorated_function():
     orchestrator = FunctionsOrchestrator()
 
     @orchestrator.function
@@ -26,26 +13,21 @@ def test_orchestrator_initialization_with_decorated_functions():
     def function_two():
         return "function_two"
 
-    assert orchestrator.functions == [function_one, function_two]
-    assert orchestrator.function_specs != []
+    assert function_one.__name__ in orchestrator._functions.keys()
+    assert function_two.__name__ in orchestrator._functions.keys()
 
+def test_orchestrator_initialization_with_standard_function():
+    orchestrator = FunctionsOrchestrator()
 
-def test_orchestrator_initialization_with_registration_methods():
     def function_one():
         return "function_one"
 
     def function_two():
         return "function_two"
 
-    orchestrator = FunctionsOrchestrator()
     orchestrator.register_all([function_one, function_two])
-    assert orchestrator.functions == [function_one, function_two]
-    assert orchestrator.function_specs != []
-
-    orchestrator = FunctionsOrchestrator()
-    orchestrator.register(function_one)
-    assert orchestrator.functions == [function_one]
-    assert orchestrator.function_specs != []
+    assert function_two.__name__ in orchestrator._functions.keys()
+    assert function_one.__name__ in orchestrator._functions.keys()
 
 
 def test_orchestrator_function_descriptions(expected_metadata, weather_function):
@@ -71,7 +53,7 @@ def test_orchestrator_call_functions(weather_chat_response, weather_function):
 def test_call_unregistered_function_raises_error():
     orchestrator = FunctionsOrchestrator()
 
-    with pytest.raises(ValueError):
+    with pytest.raises(KeyError):
         orchestrator.call_function(
             {
                 "choices": [

@@ -9,6 +9,7 @@ from openai_functools.openai_types import python_type_to_openapi_type
 
 
 def openai_function(func: Callable) -> Callable:
+    """ Wrapper for functions to add .openai_metadata property """
     func.openai_metadata = extract_openai_function_metadata(func)
 
     print(get_type_hints(func))
@@ -21,6 +22,7 @@ def openai_function(func: Callable) -> Callable:
 
 
 def extract_openai_function_metadata(func: Callable) -> dict:
+    """ Extracts function metadata using function signature, docstring, ... """
     sig = inspect.signature(func)
     params = sig.parameters
     properties = {}
@@ -46,8 +48,9 @@ def extract_openai_function_metadata(func: Callable) -> dict:
     }
     return metadata
 
-
+# FIXME I believe this is in broken state, check py version thing? - Jakob 101023
 def extract_literal_allowed_values(func):
+    """ Using signature to extract allowed values for Literal[...]"""
     signature = inspect.signature(func)
     literal_parameters = {}
 
@@ -61,6 +64,7 @@ def extract_literal_allowed_values(func):
 def extract_parameter_properties(
     param: inspect.Parameter, docstring_params: dict
 ) -> dict:
+    """ Extracts types of function parameters. Defaults to string if None found. """
     name = param.name
 
     properties = {
