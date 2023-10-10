@@ -107,7 +107,7 @@ As you can see, our `openai_function` decorator allows you to focus more on the 
 
 ### Using the Orchestrator
 
-The orchestrator in `openai-functools` simplifies the task of managing multiple registered functions and automates the generation of OpenAI function descriptions. Below is a guide on how to use it.
+The orchestrator in `openai-functools` simplifies the task of managing multiple registered functions and/or methods and automates the generation of OpenAI function descriptions. Below is a guide on how to use it.
 
 ```python
 from openai_functools import FunctionsOrchestrator
@@ -128,6 +128,30 @@ orchestrator.register_all([get_current_weather, get_weather_next_day])
 #### Registering Functions
 
 Functions can be registered using the `register_all` or `register` method as shown in the code snippet above. `register_all` accepts a list of functions, while `register` is used to register a single function.
+
+#### Registering Instances
+
+All methods of an instance can be registered using the `register_instances_all` or `register_instance` method and individual methods can be registered using regular function registration. An example of instance registration can be seen below.
+
+```python
+from openai_functools import FunctionsOrchestrator
+
+class WeatherService:
+    def get_current_weather(location, unit="fahrenheit"):
+        """Get the current weather forecast in a given location"""
+        # ... Implementation here
+
+weatherService = WeatherService()
+orchestrator = FunctionsOrchestrator()
+
+# Register all methods of the class
+orchestrator.register_instance(weatherService)
+
+# Register individual methods of the class
+orchestrator.register_all([weatherService.get_current_weather])
+# ...
+```
+
 
 ### Creating and Using Function Descriptions
 

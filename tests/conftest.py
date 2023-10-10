@@ -1,9 +1,8 @@
 import json
 from enum import Enum
+from typing import Literal
 
 from pytest import fixture
-
-from typing import Literal
 
 
 @fixture
@@ -26,6 +25,18 @@ def weather_function():
         return json.dumps(weather_info)
 
     return get_current_weather
+
+
+class Duck:
+    """A Duck class"""
+
+    def quack(self, someParam: str):
+        return "Quack!"
+
+
+@fixture
+def duck_class_ref():
+    return Duck
 
 
 @fixture
@@ -144,6 +155,7 @@ def function_with_literal():
         return f"Hello, {string_literal}!"
 
     return literal_function
+
 
 @fixture
 def expected_function_with_literal_metadata():
