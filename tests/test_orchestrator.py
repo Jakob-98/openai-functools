@@ -2,6 +2,7 @@ import pytest
 
 from openai_functools import FunctionsOrchestrator
 
+
 def test_orchestrator_initialization_with_decorated_function():
     orchestrator = FunctionsOrchestrator()
 
@@ -15,6 +16,7 @@ def test_orchestrator_initialization_with_decorated_function():
 
     assert function_one.__name__ in orchestrator._functions.keys()
     assert function_two.__name__ in orchestrator._functions.keys()
+
 
 def test_orchestrator_initialization_with_standard_function():
     orchestrator = FunctionsOrchestrator()
@@ -94,6 +96,7 @@ def test_register_duplicate_function():
     with pytest.raises(ValueError):
         orchestrator.functions = [function_one, function_one]
 
+
 def test_register_single_instance(duck_class_ref):
     duck = duck_class_ref()
     orchestrator = FunctionsOrchestrator()
@@ -101,20 +104,16 @@ def test_register_single_instance(duck_class_ref):
     orchestrator.register_instance(duck)
 
     expected_description = {
-        'name': f"{duck.__hash__()}__quack",
-        'description': f"{duck.__hash__()}__quack",
-        'parameters': {
-            'type': 'object',
-            'properties': {
-                'someParam': {
-                    'type': 'string',
-                    'description': 'someParam'
-                }
-            },
-            'required': ['someParam']
-        }
+        "name": f"{duck.__hash__()}__quack",
+        "description": f"{duck.__hash__()}__quack",
+        "parameters": {
+            "type": "object",
+            "properties": {"someParam": {"type": "string", "description": "someParam"}},
+            "required": ["someParam"],
+        },
     }
     assert expected_description in orchestrator.function_descriptions
+
 
 def test_register_multiple_instances(duck_class_ref):
     duck1 = duck_class_ref()
@@ -124,34 +123,23 @@ def test_register_multiple_instances(duck_class_ref):
     orchestrator.register_instances_all([duck1, duck2])
 
     expected_description_1 = {
-        'name': f"{duck1.__hash__()}__quack",
-        'description': f"{duck1.__hash__()}__quack",
-        'parameters': {
-            'type': 'object',
-            'properties': {
-                'someParam': {
-                    'type': 'string',
-                    'description': 'someParam'
-                }
-            },
-            'required': ['someParam']
-        }
+        "name": f"{duck1.__hash__()}__quack",
+        "description": f"{duck1.__hash__()}__quack",
+        "parameters": {
+            "type": "object",
+            "properties": {"someParam": {"type": "string", "description": "someParam"}},
+            "required": ["someParam"],
+        },
     }
     expected_description_2 = {
-        'name': f"{duck2.__hash__()}__quack",
-        'description': f"{duck2.__hash__()}__quack",
-        'parameters': {
-            'type': 'object',
-            'properties': {
-                'someParam': {
-                    'type': 'string',
-                    'description': 'someParam'
-                }
-            },
-            'required': ['someParam']
-        }
+        "name": f"{duck2.__hash__()}__quack",
+        "description": f"{duck2.__hash__()}__quack",
+        "parameters": {
+            "type": "object",
+            "properties": {"someParam": {"type": "string", "description": "someParam"}},
+            "required": ["someParam"],
+        },
     }
 
     assert expected_description_1 in orchestrator.function_descriptions
     assert expected_description_2 in orchestrator.function_descriptions
-

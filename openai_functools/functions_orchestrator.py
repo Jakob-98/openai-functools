@@ -101,7 +101,6 @@ class FunctionsOrchestrator:
         for instance in instances:
             self.register_instance(instance)
 
-
     def _add_function(self, function: Callable) -> None:
         if not callable(function):
             raise TypeError(f'Function "{function}" is not callable.')

@@ -26,15 +26,18 @@ def weather_function():
 
     return get_current_weather
 
-class Duck():
-    """ A Duck class """
+
+class Duck:
+    """A Duck class"""
 
     def quack(self, someParam: str):
         return "Quack!"
 
+
 @fixture
 def duck_class_ref():
     return Duck
+
 
 @fixture
 def no_docstring_function():
