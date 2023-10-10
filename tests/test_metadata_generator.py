@@ -1,5 +1,5 @@
 from openai_functools.metadata_generator import (
-    extract_openai_function_metadata, openai_function)
+    extract_openai_function_metadata, openai_function, construct_function_name)
 
 
 def test_extract_function_metadata(weather_function, expected_metadata):
@@ -53,3 +53,14 @@ def test_function_with_literal_should_become_enum(
     assert (
         decorated_function.openai_metadata == expected_function_with_literal_metadata
     ), f"Expected {expected_function_with_literal_metadata}, but got {decorated_function.openai_metadata}"
+
+def test_construct_function_name_instance(duck_class_ref):
+    duck = duck_class_ref()
+
+    constructed_name = construct_function_name(duck.quack)
+    assert constructed_name == f"{duck.__hash__()}__quack"
+
+def test_construct_function_name_function(weather_function):
+    constructed_name = construct_function_name(weather_function)
+
+    assert constructed_name == "get_current_weather"

@@ -93,3 +93,65 @@ def test_register_duplicate_function():
 
     with pytest.raises(ValueError):
         orchestrator.functions = [function_one, function_one]
+
+def test_register_single_instance(duck_class_ref):
+    duck = duck_class_ref()
+    orchestrator = FunctionsOrchestrator()
+
+    orchestrator.register_instance(duck)
+
+    expected_description = {
+        'name': f"{duck.__hash__()}__quack",
+        'description': f"{duck.__hash__()}__quack",
+        'parameters': {
+            'type': 'object',
+            'properties': {
+                'someParam': {
+                    'type': 'string',
+                    'description': 'someParam'
+                }
+            },
+            'required': ['someParam']
+        }
+    }
+    assert expected_description in orchestrator.function_descriptions
+
+def test_register_multiple_instances(duck_class_ref):
+    duck1 = duck_class_ref()
+    duck2 = duck_class_ref()
+    orchestrator = FunctionsOrchestrator()
+
+    orchestrator.register_instances_all([duck1, duck2])
+
+    expected_description_1 = {
+        'name': f"{duck1.__hash__()}__quack",
+        'description': f"{duck1.__hash__()}__quack",
+        'parameters': {
+            'type': 'object',
+            'properties': {
+                'someParam': {
+                    'type': 'string',
+                    'description': 'someParam'
+                }
+            },
+            'required': ['someParam']
+        }
+    }
+    expected_description_2 = {
+        'name': f"{duck2.__hash__()}__quack",
+        'description': f"{duck2.__hash__()}__quack",
+        'parameters': {
+            'type': 'object',
+            'properties': {
+                'someParam': {
+                    'type': 'string',
+                    'description': 'someParam'
+                }
+            },
+            'required': ['someParam']
+        }
+    }
+
+    assert expected_description_1 in orchestrator.function_descriptions
+    assert expected_description_2 in orchestrator.function_descriptions
+
