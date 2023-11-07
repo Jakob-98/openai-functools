@@ -1,5 +1,8 @@
 from openai_functools.metadata_generator import (
-    construct_function_name, extract_openai_function_metadata, openai_function)
+    construct_function_name,
+    extract_openai_function_metadata,
+    openai_function,
+)
 
 
 def test_extract_function_metadata(weather_function, expected_metadata):

@@ -3,7 +3,9 @@ from typing import Any, Callable, Dict, List, Optional
 
 from openai_functools.function_spec import FunctionSpec
 from openai_functools.metadata_generator import (
-    construct_function_name, extract_openai_function_metadata)
+    construct_function_name,
+    extract_openai_function_metadata,
+)
 
 
 class FunctionsOrchestrator:
