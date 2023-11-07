@@ -228,8 +228,10 @@ class FunctionsOrchestrator:
             ]
         )
         return [spec.parameters for spec in specs]
- 
-    def create_tools_descriptions(self, selected_functions: Optional[List[str]] = None) -> List[Dict[str, Any]]:
+
+    def create_tools_descriptions(
+        self, selected_functions: Optional[List[str]] = None
+    ) -> List[Dict[str, Any]]:
         """
         Creates descriptions for the selected functions.
 
@@ -248,10 +250,4 @@ class FunctionsOrchestrator:
                 if spec.name in selected_functions
             ]
         )
-        return [
-            {
-                "type": "function",
-                "function": spec.parameters
-            }
-            for spec in specs
-        ]
+        return [{"type": "function", "function": spec.parameters} for spec in specs]
