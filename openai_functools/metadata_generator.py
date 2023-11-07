@@ -1,7 +1,7 @@
 import inspect
 import typing
 from functools import wraps
-from typing import Any, Callable, get_type_hints
+from typing import Any, Callable
 
 from docstring_parser import parse
 
