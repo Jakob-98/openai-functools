@@ -12,8 +12,6 @@ def openai_function(func: Callable) -> Callable:
     """Wrapper for functions to add .openai_metadata property"""
     func.openai_metadata = extract_openai_function_metadata(func)
 
-    print(get_type_hints(func))
-
     @wraps(func)
     def wrapper(*args: Any, **kwargs: Any) -> Any:
         return func(*args, **kwargs)
