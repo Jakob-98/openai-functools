@@ -3,9 +3,7 @@ from typing import Any, Callable, Dict, List, Optional
 
 from openai_functools.function_spec import FunctionSpec
 from openai_functools.metadata_generator import (
-    construct_function_name,
-    extract_openai_function_metadata,
-)
+    construct_function_name, extract_openai_function_metadata)
 
 
 class FunctionsOrchestrator:
@@ -155,8 +153,15 @@ class FunctionsOrchestrator:
                     f'Function "{function_name}" is not '
                     f"registered with the orchestrator."
                 )
-
             return function.func_ref(**function_args)
+        elif tool_calls := response_message.get("tool_calls"):
+            function_responses = {}
+            for tool_call in tool_calls:
+                function_name = tool_call.function.name
+                function_args = json.loads(tool_call.function.arguments)
+                function = self._functions[function_name]
+                function_responses[tool_call.id] = function.func_ref(**function_args)
+            return function_responses
         else:
             raise ValueError(
                 f'Function call information not found in response message "{response_message}".'
