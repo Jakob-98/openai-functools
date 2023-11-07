@@ -152,6 +152,9 @@ orchestrator.register_all([weatherService.get_current_weather])
 # ...
 ```
 
+#### Parallel function calling
+
+Parallel function calling is a feature supported in [certain models](https://platform.openai.com/docs/guides/function-calling). Calling parralel functions is supported with the orchestrator. For this, use `orchestrator.generate_tools_descriptions()`. See the [orchestrator parallel example](./examples/orchestrator_example_parallel.py) for more details.
 
 ### Creating and Using Function Descriptions
 
