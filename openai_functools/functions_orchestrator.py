@@ -210,7 +210,7 @@ class FunctionsOrchestrator:
         self, selected_functions: Optional[List[str]] = None
     ) -> List[Dict[str, Any]]:
         """
-        Creates descriptions for the selected functions.
+        Creates descriptions for the selected functions. This should be used when calling ChatCompletion.create with the functions argument.
 
         Args:
             selected_functions (Optional[List[str]]): The list of selected function names. If None, descriptions for all registered functions are created.
@@ -233,7 +233,7 @@ class FunctionsOrchestrator:
         self, selected_functions: Optional[List[str]] = None
     ) -> List[Dict[str, Any]]:
         """
-        Creates descriptions for the selected functions.
+        Creates descriptions for the selected functions. This should be used when calling ChatCompletion.create with the tools argument.
 
         Args:
             selected_functions (Optional[List[str]]): The list of selected function names. If None, descriptions for all registered functions are created.
