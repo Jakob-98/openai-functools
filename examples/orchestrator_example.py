@@ -44,7 +44,7 @@ if __name__ == "__main__":
     print(orchestrator.call_function(response))
 
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo-0613",
+        model="gpt-3.5-turbo-1106",
         messages=[
             {"role": "user", "content": "What's the weather like in Boston tomorrow?"}
         ],

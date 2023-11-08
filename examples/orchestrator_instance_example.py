@@ -59,3 +59,16 @@ if __name__ == "__main__":
     )
     # Call the function that is specified in the response
     print(orchestrator.call_function(response))
+
+    # parallel example
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo-1106",
+        messages=[
+            {"role": "user", "content": "What's the weather like in Boston today and tomorrow?"}
+        ],
+        tools=orchestrator.create_tools_descriptions(),
+        tool_choice="auto",
+    )
+    # Call the function that is specified in the response
+    print(orchestrator.call_function(response))
+

@@ -1,6 +1,6 @@
 # [openai-functools](https://github.com/Jakob-98/openai-functools)
 
-`openai-functools` is a Python library designed to enhance the functionality of OpenAI's `gpt-3.5-turbo-0613` and `gpt-4-0613` models for function calling, [ref. the OpenAI official docs](https://platform.openai.com/docs/guides/gpt/function-calling). This library focuses on generating the function metadata JSON automatically by wrapping existing Python functions in our decorator, or by registering them with our orchestrator. This removes the need for you to manually create and manage the JSON structures required for function calling in these models.
+`openai-functools` is a Python library designed to enhance the functionality of OpenAI's supported models for function calling, [ref. the OpenAI official docs](https://platform.openai.com/docs/guides/function-calling). This library focuses on generating the function metadata JSON automatically by wrapping existing Python functions in our decorator, or by registering them with our orchestrator. This removes the need for you to manually create and manage the JSON structures required for function calling in these models.
 
 ## Why openai-functools
 
@@ -152,6 +152,9 @@ orchestrator.register_all([weatherService.get_current_weather])
 # ...
 ```
 
+#### Parallel function calling
+
+Parallel function calling is a feature supported in [certain models](https://platform.openai.com/docs/guides/function-calling). Calling parallel functions is supported with the orchestrator. For this, use `orchestrator.generate_tools_descriptions()`. See the [orchestrator parallel example](./examples/orchestrator_example_parallel.py) for more details.
 
 ### Creating and Using Function Descriptions
 
