@@ -9,6 +9,8 @@ from openai_functools.metadata_generator import (
 
 
 class FunctionsOrchestrator:
+SUPPORTED_MODEL_VERSIONS = ["gpt-3.5-turbo", "text-davinci-002", "text-curie-003"]
+=======
     """
     Orchestrates the functions used in the OpenAI function calling models.
     """
