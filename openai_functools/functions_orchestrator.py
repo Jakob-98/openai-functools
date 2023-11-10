@@ -9,7 +9,7 @@ from openai_functools.metadata_generator import (
 
 
 class FunctionsOrchestrator:
-SUPPORTED_MODEL_VERSIONS = ["gpt-3.5-turbo", "text-davinci-002", "text-curie-003"]
+    SUPPORTED_MODEL_VERSIONS = ["gpt-3.5-turbo", "text-davinci-002", "text-curie-003"]
 =======
     """
     Orchestrates the functions used in the OpenAI function calling models.
@@ -149,7 +149,7 @@ SUPPORTED_MODEL_VERSIONS = ["gpt-3.5-turbo", "text-davinci-002", "text-curie-003
         """
         response_message = openai_response["choices"][0]["message"]
 
-        if self.model_version not in SUPPORTED_MODEL_VERSIONS:
+        if self.model_version not in self.SUPPORTED_MODEL_VERSIONS:
             raise ValueError(f'Model version "{self.model_version}" is not supported.')
         
         if function_call := response_message.get("function_call"):
@@ -267,6 +267,6 @@ SUPPORTED_MODEL_VERSIONS = ["gpt-3.5-turbo", "text-davinci-002", "text-curie-003
         Args:
             model_version (str): The version of the model to be used.
         """
-        if model_version not in SUPPORTED_MODEL_VERSIONS:
+        if model_version not in self.SUPPORTED_MODEL_VERSIONS:
             raise ValueError(f'Model version "{model_version}" is not supported.')
         self.model_version = model_version
