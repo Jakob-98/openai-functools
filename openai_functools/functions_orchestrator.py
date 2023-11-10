@@ -15,14 +15,16 @@ class FunctionsOrchestrator:
 
     _functions: Dict[str, FunctionSpec]
 
-    def __init__(self, functions: Optional[List[Callable]] = None) -> None:
+    def __init__(self, functions: Optional[List[Callable]] = None, model_version: Optional[str] = None) -> None:
         """
-        Initializes the FunctionsOrchestrator with an optional list of functions.
+        Initializes the FunctionsOrchestrator with an optional list of functions and model version.
 
         Args:
             functions (Optional[List[Callable]]): A list of functions to be registered.
+            model_version (Optional[str]): The version of the model to be used.
         """
         self._functions = {}
+        self.model_version = model_version
 
         if functions is not None:
             for function in functions:
@@ -145,6 +147,9 @@ class FunctionsOrchestrator:
         """
         response_message = openai_response["choices"][0]["message"]
 
+        if self.model_version not in SUPPORTED_MODEL_VERSIONS:
+            raise ValueError(f'Model version "{self.model_version}" is not supported.')
+        
         if function_call := response_message.get("function_call"):
             function_name = function_call["name"]
             function_args = json.loads(function_call["arguments"])
@@ -253,3 +258,13 @@ class FunctionsOrchestrator:
             ]
         )
         return [{"type": "function", "function": spec.parameters} for spec in specs]
+    def set_model_version(self, model_version: str) -> None:
+        """
+        Sets the model version.
+
+        Args:
+            model_version (str): The version of the model to be used.
+        """
+        if model_version not in SUPPORTED_MODEL_VERSIONS:
+            raise ValueError(f'Model version "{model_version}" is not supported.')
+        self.model_version = model_version
