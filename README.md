@@ -14,6 +14,8 @@ OpenAI function calling provides a powerful mechanism to extend the capabilities
 
 These models *don't actually perform the function calls* - they merely generate the JSON data that you can use in your code to call these functions. This ability allows for a wide range of applications, such as creating chatbots that call external APIs, converting natural language into API calls, and extracting structured data from text.
 
+In this updated documentation, we will provide a more detailed explanation of the functionalities of `openai-functools` and how to use it. We will also include examples and diagrams to better illustrate these functionalities. We have researched different documentation technologies such as Sphinx, MkDocs, and Docusaurus, and have decided to use Sphinx for this repository due to its extensive features and compatibility with Python.
+
 Typical openai functions flow:
 
 ![openai-functions-flow](./assets/openai-functions.png)
@@ -30,6 +32,12 @@ pip install openai-functools
 
 Alternatively, you can clone this repository and install with Poetry:
 
+To generate the documentation, you will also need to install Sphinx. You can do this with pip:
+
+```sh
+pip install sphinx
+```
+
 ```sh
 git clone https://github.com/Jakob-98/openai-functools.git
 cd openai-functools
@@ -45,6 +53,8 @@ This library is designed to streamline the usage of OpenAI's language models by 
 ### Manual Approach
 
 Traditionally, you'd define a function, like `get_current_weather`, and then manually create a JSON structure that describes this function. The structure includes the function name, description, and parameters it takes, as well as the types of these parameters.
+
+Here is an example of how you would traditionally define a function and manually create a JSON structure that describes it:
 
 ```python
 def get_current_weather(location, unit="fahrenheit"):
@@ -73,9 +83,34 @@ def run_conversation():
                 },
                 "required": ["location"],
             },
-        }
+### Automated Approach using openai-functools
+
+The `openai-functools` library simplifies the process by automatically generating the necessary JSON structure. You just need to import our package and wrap your function with the `openai_function` decorator. Here's how it works:
+
+```python
+import json
+from openai_functools import openai_function
+
+@openai_function
+def get_current_weather(location, unit="fahrenheit"):
+    weather_info = {
+    
+    This approach requires you to manually create and manage the JSON structures required for function calling in these models. It can be tedious and error-prone, especially when dealing with complex functions or a large number of functions.
     ]
-    # Proceed with calling openai, invoking the function using the response, etc..
+    ### Using the Orchestrator
+    
+    The orchestrator in `openai-functools` simplifies the task of managing multiple registered functions and/or methods and automates the generation of OpenAI function descriptions. Below is a guide on how to use it.
+    
+    ```python
+    from openai_functools import FunctionsOrchestrator
+    
+    def get_current_weather(location, unit="fahrenheit"):
+        """Get the current weather forecast in a given location"""
+        # ... Implementation here
+    
+    def get_weather_next_day(location, unit="fahrenheit"):
+        """Get the weather forecast for the next day in a given location"""
+        # ... Implementation here
 ```
 
 ### Automated Approach using openai-functools
@@ -103,7 +138,7 @@ def run_conversation():
     ]
 ```
 
-As you can see, our `openai_function` decorator allows you to focus more on the logic of your function, while the tedious task of preparing function metadata is taken care of automatically.
+As you can see, our `openai_function` decorator allows you to focus more on the logic of your function, while the tedious task of preparing function metadata is taken care of automatically. This makes it easier and more efficient to use OpenAI's function calling feature.
 
 ### Using the Orchestrator
 
@@ -127,7 +162,7 @@ orchestrator.register_all([get_current_weather, get_weather_next_day])
 
 #### Registering Functions
 
-Functions can be registered using the `register_all` or `register` method as shown in the code snippet above. `register_all` accepts a list of functions, while `register` is used to register a single function.
+Functions can be registered using the `register_all` or `register` method as shown in the code snippet above. `register_all` accepts a list of functions, while `register` is used to register a single function. This allows you to easily manage multiple functions and ensure that their metadata is correctly generated.
 
 #### Registering Instances
 
@@ -154,6 +189,42 @@ orchestrator.register_all([weatherService.get_current_weather])
 
 #### Parallel function calling
 
+Parallel function calling is a feature supported in [certain models](https://platform.openai.com/docs/guides/function-calling). Calling parallel functions is supported with the orchestrator. For this, use `orchestrator.generate_tools_descriptions()`. This allows you to call multiple functions in parallel, which can significantly improve the efficiency of your application. See the [orchestrator parallel example](./examples/orchestrator_example_parallel.py) for more details.
+
+### Creating and Using Function Descriptions
+
+Function descriptions are automatically created based on the registered functions using `create_function_descriptions` method. These descriptions can then be passed to the OpenAI `ChatCompletion.create` method. This automates the process of creating function descriptions, making it easier and more efficient to use OpenAI's function calling feature.
+
+```python
+response = openai.ChatCompletion.create(
+    model="gpt-3.5-turbo-0613",
+    messages=[{"role": "user", "content": "What's the weather like in Boston?"}],
+# ...
+```
+
+Alternatively, you can clone this repository and install with Poetry:
+
+```sh
+git clone https://github.com/Jakob-98/openai-functools.git
+cd openai-functools
+poetry install
+```
+
+Ensure your environment variable `OPENAI_API_KEY` is set.
+
+To generate the documentation, navigate to the `docs` directory and run the following command:
+
+```sh
+make html
+```
+
+This will generate a `build` directory in the `docs` directory. Open the `index.html` file in the `build/html` directory to view the documentation.
+
+## Usage
+
+This library is designed to streamline the usage of OpenAI's language models by simplifying the function metadata creation process. The following sections will walk you through a basic usage of openai-functools, including a traditional manual approach and our enhanced automatic approach using the `openai_function` decorator.
+
+### Manual Approach
 Parallel function calling is a feature supported in [certain models](https://platform.openai.com/docs/guides/function-calling). Calling parallel functions is supported with the orchestrator. For this, use `orchestrator.generate_tools_descriptions()`. See the [orchestrator parallel example](./examples/orchestrator_example_parallel.py) for more details.
 
 ### Creating and Using Function Descriptions
