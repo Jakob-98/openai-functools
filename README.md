@@ -12,7 +12,7 @@ The image below illustrates the reduction of code which needs to be manually wri
 
 OpenAI function calling provides a powerful mechanism to extend the capabilities of AI models, like gpt-3.5-turbo-0613 and gpt-4-0613. In an API call, these models can understand a set of functions described to them and generate JSON outputs that adhere to the defined function signatures.
 
-These models *don't actually perform the function calls* - they merely generate the JSON data that you can use in your code to call these functions. This ability allows for a wide range of applications, such as creating chatbots that call external APIs, converting natural language into API calls, and extracting structured data from text.
+These models _don't actually perform the function calls_ - they merely generate the JSON data that you can use in your code to call these functions. This ability allows for a wide range of applications, such as creating chatbots that call external APIs, converting natural language into API calls, and extracting structured data from text.
 
 Typical openai functions flow:
 
