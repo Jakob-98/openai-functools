@@ -200,9 +200,10 @@ Currently, only "reStructuredText" (reST) is supported by default, although this
 Several examples can be found in the `examples` directory of this repository.
 
 1. The [Maintenance app usecase](./examples/maintenance_app_usecase/) is the recommended example to analyse, it shows the power of the library in a (spoofed) real-world setting.
-1. The [Naive approach example](./examples/naive_approach.py) shows how to call openai-functions without use of the library.
-1. The [Simple example](./examples/simple_example.py) is similar to the naive approach, but makes use our decorator.
-1. The [Orchestrator example](./examples/orchestrator_example.py) shows how one can use the orchestrator class.
+2. The [Naive approach example](./examples/naive_approach.py) shows how to call openai-functions without use of the library.
+3. The [Simple example](./examples/simple_example.py) is similar to the naive approach, but makes use our decorator.
+4. The [Orchestrator example](./examples/orchestrator_example.py) shows how one can use the orchestrator class.
+5. The [Langchain example](./examples/langchain_example.py) demonstrates how to integrate the `openai-functools` library with the `langchain` library. The `langchain` library is used to transform text, and this transformation function is registered with the `FunctionsOrchestrator` from the `openai-functools` library. The orchestrator is then used to call the transformation function based on an OpenAI response. You can find more details in the [examples README](./examples/README.md).
 
 ## Contributing
 
