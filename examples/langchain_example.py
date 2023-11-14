@@ -1,14 +1,16 @@
-from openai_functools import FunctionSpec, FunctionsOrchestrator
-from openai_functools.metadata_generator import openai_function
-
 # Import the langchain library
 import langchain
+
+from openai_functools import FunctionsOrchestrator
+from openai_functools.metadata_generator import openai_function
+
 
 @openai_function
 def transform_text(text: str) -> str:
     # Use the langchain library to transform the text
     transformed_text = langchain.transform(text)
     return transformed_text
+
 
 # Instantiate a FunctionsOrchestrator
 orchestrator = FunctionsOrchestrator()
@@ -23,7 +25,7 @@ openai_response = {
             "message": {
                 "function_call": {
                     "name": "transform_text",
-                    "arguments": '{"text": "Hello, world!"}'
+                    "arguments": '{"text": "Hello, world!"}',
                 }
             }
         }
