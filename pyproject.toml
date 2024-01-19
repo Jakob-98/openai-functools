@@ -8,7 +8,7 @@ packages = [{include = "openai_functools"}]
 
 [tool.poetry.dependencies]
 python = "^3.8.1"
-openai = "1.7.2"
+openai = "^1.7.2"
 pytest = "^7.4.0"
 flake8 = "^6.0.0"
 black = "^23.7.0"

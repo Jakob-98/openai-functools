@@ -2,6 +2,8 @@ import pytest
 
 from openai_functools import FunctionsOrchestrator
 
+from unittest.mock import MagicMock
+
 
 def test_orchestrator_initialization_with_decorated_function():
     orchestrator = FunctionsOrchestrator()
@@ -55,21 +57,15 @@ def test_orchestrator_call_functions(weather_chat_response, weather_function):
 def test_call_unregistered_function_raises_error():
     orchestrator = FunctionsOrchestrator()
 
+    # Create a MagicMock object to simulate the API response
+    mock_response = MagicMock()
+    mock_response.choices[0].message.function_call.name = "unregistered_function"
+    mock_response.choices[0].message.function_call.arguments = "{}"
+
+
+    # Use pytest to check if the correct exception is raised
     with pytest.raises(KeyError):
-        orchestrator.call_function(
-            {
-                "choices": [
-                    {
-                        "message": {
-                            "function_call": {
-                                "name": "unregistered_function",
-                                "arguments": "{}",
-                            }
-                        }
-                    }
-                ]
-            }
-        )
+        orchestrator.call_function(mock_response)
 
 
 def test_register_non_callable_raises_error():
