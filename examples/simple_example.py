@@ -20,13 +20,14 @@ def get_current_weather(location, unit="fahrenheit"):
 
 
 def run_conversation():
-
     messages = [{"role": "user", "content": "What's the weather like in London?"}]
 
-    response = client.chat.completions.create(model="gpt-3.5-turbo-0613",
-    messages=messages,
-    functions=[get_current_weather.openai_metadata],
-    function_call="auto")
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo-0613",
+        messages=messages,
+        functions=[get_current_weather.openai_metadata],
+        function_call="auto",
+    )
 
     response_message = response.choices[0].message
 
@@ -40,8 +41,9 @@ def run_conversation():
         )
         messages.append(response_message)
 
-        second_response = client.chat.completions.create(model="gpt-3.5-turbo-0613",
-        messages=messages)
+        second_response = client.chat.completions.create(
+            model="gpt-3.5-turbo-0613", messages=messages
+        )
         return second_response
 
 

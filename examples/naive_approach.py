@@ -36,10 +36,12 @@ def run_conversation():
         }
     ]
 
-    response = client.chat.completions.create(model="gpt-3.5-turbo-0613",
-    messages=messages,
-    functions=functions,
-    function_call="auto")
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo-0613",
+        messages=messages,
+        functions=functions,
+        function_call="auto",
+    )
     response_message = response.choices[0].message
 
     if response_message.get("function_call"):
@@ -55,8 +57,9 @@ def run_conversation():
         messages.append(
             {"role": "function", "name": function_name, "content": function_response}
         )
-        second_response = client.chat.completions.create(model="gpt-3.5-turbo-0613",
-        messages=messages)
+        second_response = client.chat.completions.create(
+            model="gpt-3.5-turbo-0613", messages=messages
+        )
         return second_response
 
 
