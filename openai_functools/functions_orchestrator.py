@@ -143,11 +143,11 @@ class FunctionsOrchestrator:
         Returns:
             dict: The responses from the called function.
         """
-        response_message = openai_response["choices"][0]["message"]
+        response_message = openai_response.choices[0].message
 
-        if function_call := response_message.get("function_call"):
-            function_name = function_call["name"]
-            function_args = json.loads(function_call["arguments"])
+        if function_call := response_message.function_call:
+            function_name = function_call.name
+            function_args = json.loads(function_call.arguments)
             function = self._functions[function_name]
 
             if function is None:
@@ -156,7 +156,7 @@ class FunctionsOrchestrator:
                     f"registered with the orchestrator."
                 )
             return function.func_ref(**function_args)
-        elif tool_calls := response_message.get("tool_calls"):
+        elif tool_calls := response_message.tool_calls:
             function_responses = {}
             for tool_call in tool_calls:
                 function_name = tool_call.function.name

@@ -1,7 +1,9 @@
 import json
 import os
 
-import openai
+from openai import OpenAI
+
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
 def get_current_weather(location, unit="fahrenheit"):
@@ -15,7 +17,6 @@ def get_current_weather(location, unit="fahrenheit"):
 
 
 def run_conversation():
-    openai.api_key = os.getenv("OPENAI_API_KEY")
     messages = [{"role": "user", "content": "What's the weather like in London?"}]
     functions = [
         {
@@ -35,13 +36,13 @@ def run_conversation():
         }
     ]
 
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo-0613",
         messages=messages,
         functions=functions,
         function_call="auto",
     )
-    response_message = response["choices"][0]["message"]
+    response_message = response.choices[0].message
 
     if response_message.get("function_call"):
         available_functions = {"get_current_weather": get_current_weather}
@@ -56,9 +57,8 @@ def run_conversation():
         messages.append(
             {"role": "function", "name": function_name, "content": function_response}
         )
-        second_response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo-0613",
-            messages=messages,
+        second_response = client.chat.completions.create(
+            model="gpt-3.5-turbo-0613", messages=messages
         )
         return second_response
 

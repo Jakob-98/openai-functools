@@ -1,7 +1,9 @@
 import json
 import os
 
-import openai
+from openai import OpenAI
+
+client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
 
 from openai_functools import FunctionsOrchestrator
 
@@ -27,8 +29,7 @@ orchestrator.register_all([get_current_weather])
 
 
 if __name__ == "__main__":
-    openai.api_key = os.environ["OPENAI_API_KEY"]
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo-1106",
         messages=[
             {
