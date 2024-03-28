@@ -14,5 +14,7 @@ def python_type_to_openapi_type(python_type: type) -> str:
         return "array"
     elif python_type == dict:
         return "object"
+    elif python_type == bytes:
+        return "string"
     else:
         return "string"  # default
