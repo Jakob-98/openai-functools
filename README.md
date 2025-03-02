@@ -1,5 +1,7 @@
 # [openai-functools](https://github.com/Jakob-98/openai-functools)
 
+**NOTE**: 2025-03-02 - we have decided to archive the project and to keep it public for reference purposes.
+
 `openai-functools` is a Python library designed to enhance the functionality of OpenAI's supported models for function calling, [ref. the OpenAI official docs](https://platform.openai.com/docs/guides/function-calling). This library focuses on generating the function metadata JSON automatically by wrapping existing Python functions in our decorator, or by registering them with our orchestrator. This removes the need for you to manually create and manage the JSON structures required for function calling in these models.
 
 ## Why openai-functools
